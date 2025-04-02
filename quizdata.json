@@ -1,0 +1,24 @@
+{
+	"questions": [
+	  {
+		"question": "What do you enjoy the most?",
+		"options": ["Gaming", "Shopping", "Coffee", "Books", "Food"]
+	  },
+	  {
+		"question": "How do you like to spend your weekends?",
+		"options": ["Playing video games", "Going to the mall", "Reading", "Trying new cafes", "Exploring new restaurants"]
+	  },
+	  {
+		"question": "Pick a treat for yourself:",
+		"options": ["New game", "Trendy clothes", "Coffee & pastry", "A good book", "Takeout from my favorite place"]
+	  }
+	],
+	"giftCards": {
+	  "Gaming": "Steam Gift Card",
+	  "Shopping": "Target Gift Card",
+	  "Coffee": "Starbucks Gift Card",
+	  "Books": "Barnes & Noble Gift Card",
+	  "Food": "Uber Eats Gift Card"
+	}
+  }
+  
