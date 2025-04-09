@@ -286,7 +286,7 @@ function setup() {
 	let mainXLabel = createP('Main Text Horizontal Position');
 	mainXLabel.parent(gridControls);
 	mainXLabel.addClass('label');
-	xMainSlider = createSlider(0, 300, mainX);
+	xMainSlider = createSlider(0, 700, mainX);
 	xMainSlider.parent(gridControls);
 	xMainSlider.input(() => { 
 		mainX = xMainSlider.value(); 
@@ -295,7 +295,7 @@ function setup() {
 	let mainYLabel = createP('Main Text Vertical Position');
 	mainYLabel.parent(gridControls);
 	mainYLabel.addClass('label');
-	yMainSlider = createSlider(0, 500, mainY);
+	yMainSlider = createSlider(-60, 400, mainY);
 	yMainSlider.parent(gridControls);
 	yMainSlider.input(() => { 
 		mainY = yMainSlider.value(); 
@@ -304,7 +304,7 @@ function setup() {
 	let capXLabel = createP('Caption Horizontal Position');
 	capXLabel.parent(gridControls);
 	capXLabel.addClass('label');
-	xCaptionSlider = createSlider(0, 400, captionX);
+	xCaptionSlider = createSlider(0, 700, captionX);
 	xCaptionSlider.parent(gridControls);
 	xCaptionSlider.input(() => { 
 		captionX = xCaptionSlider.value(); 
@@ -315,7 +315,7 @@ function setup() {
 	capYLabel.addClass('label');
 
 	capYLabel.style('color', 'white');
-	yCaptionSlider = createSlider(0, 600, captionY);
+	yCaptionSlider = createSlider(0, 500, captionY);
 	yCaptionSlider.parent(gridControls);
 	yCaptionSlider.input(() => { captionY = yCaptionSlider.value(); });
 
