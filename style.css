@@ -51,7 +51,8 @@ html, body {
 
 .bottom-controls{
 	display: flex;
-	gap: 1rem;
+	gap: 5px;
+	height: 80%;
 }
 
 .button{
@@ -79,4 +80,22 @@ button{
 .canvas{
 	box-shadow: 0 0 10px rgba(0,0,0,0.25);
 	background: white;
+}
+
+@media screen and (min-width: 400px) {
+	.container {
+		flex-direction: column-reverse;
+	}
+
+	.canvas-wrapper{
+		height:100%;
+	}
+
+	.controls {
+		width: 97vw;
+	}
+
+	.label {
+		font-size: 20px;
+	}
 }

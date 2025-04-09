@@ -2,7 +2,6 @@ let tagline = ["H", "e", "l", "l", "o"];
 
 let romanticFont, springFont, gamerFont, holidayFont, gothicFont;
 
-
 let button, inp, controlsDiv, containerDiv, canvasWrapper;
 let font1, font2, font3, font4;
 let widther, heighter, waver, glitch, maxIndex, maxim;
@@ -320,7 +319,7 @@ function setup() {
 	yCaptionSlider.input(() => { captionY = yCaptionSlider.value(); });
 
 	// refresh design button
-	let refreshBtn = createButton('Refresh Design');
+	let refreshBtn = createButton('Refresh');
 	refreshBtn.addClass('button');
 	refreshBtn.parent(bottomControls);
 	refreshBtn.mousePressed(() => { 
@@ -328,11 +327,17 @@ function setup() {
 	});
 
 	// save card button
-	button = createButton('Save Card as PNG');
+	button = createButton('Save');
 	button.addClass('button');
 	button.parent(bottomControls);
 	button.mousePressed(() => saveCanvas('greeting-card', 'png'));
 
+	// recipient view button
+	let viewButton = createButton('View as Recipient');
+	viewButton.addClass('button');
+	viewButton.parent(bottomControls);
+	viewButton.mousePressed(openRecipientView);
+  
 	// canvas
 	canvasWrapper = createDiv();
 	canvasWrapper.parent(containerDiv);
@@ -790,6 +795,85 @@ function drawShape(index) {
 	text(texter, 0, -7);
 	pop();
   }
+
+  function getCanvasImage() {
+	return canvas.toDataURL('image/png');
+  }
+
+  function openRecipientView() {
+	const imageData = getCanvasImage();
+	const recipientWindow = window.open('', '_blank');
+	recipientWindow.document.write(`
+	  <!DOCTYPE html>
+	  <html lang="en">
+	  <head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Recipient View</title>
+		<style>
+		  body {
+			margin: 0;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 100vh;
+			background-color: #D9DCD6;
+		  }
+		  .card-container {
+			perspective: 1500px;
+		  }
+		  .card {
+			width: 707px;
+			height: 500px;
+			position: relative;
+		  }
+		  .card-cover, .card-content {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			backface-visibility: hidden;
+		  }
+		  .card-cover {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			transform-origin: top;
+			transition: transform 1s ease-in-out;
+			z-index: 2;
+		  }
+		  .card-cover img {
+			width: 100%;
+			height: auto;
+		  }
+		  .card-content {
+			background-color: red;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			transform: rotateX(180deg);
+		  }
+		  .card:hover .card-cover {
+			transform: rotateX(-180deg);
+		  }
+		</style>
+	  </head>
+	  <body>
+		<div class="card-container">
+		  <div class="card">
+			<div class="card-cover">
+			  <img src="${imageData}" alt="Card Cover">
+			</div>
+			<div class="card-content">
+			  <!-- Inside content here -->
+			</div>
+		  </div>
+		</div>
+	  </body>
+	  </html>
+	`);
+	recipientWindow.document.close();
+  }
+  
   
   
 

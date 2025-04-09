@@ -24,12 +24,12 @@ function drawPerlinBackground() {
 		let y = j * size + size / 2;
 		let noiseVal = noise(i * noiseScale, j * noiseScale, zoff);
 		let circleSize = map(noiseVal, 0, 1, 0, size * 1.7);
-		let grey = map(noiseVal, 0, 1, 100, 255); // Shades of grey
+		let grey = map(noiseVal, 0, 1, 100, 255); 
 		fill(100);
 		noStroke();
 		ellipse(x, y, circleSize, circleSize);
 	  }
 	}
-	zoff += 0.01; // Increment z-offset for animation
+	zoff += 0.01; 
   }
   
