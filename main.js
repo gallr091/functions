@@ -63,7 +63,7 @@ const themes = {
     font: 'gamer',
     shape: 'pixel',
     bgColor: '#000000',
-    mainTextColor: '#00ff00',
+    mainTextColor: '#EDEDED',
     captionTextColor: '#00ffff',
     rectColor: '#ff00ff'
   },
@@ -384,7 +384,7 @@ function draw() {
 	  if (currentTheme === 'spring') {
 
 		push();
-		console.log('Drawing Stems and Flowers');
+		console.log('drawing stems and flowers?');
 		drawStemsAndFlowers();
 		pop();
 	  } 
@@ -395,6 +395,10 @@ function draw() {
 	// 	pop();
 		// noLoop();
 	//   }
+
+	if (currentTheme === 'gamer') {
+		drawGamerTheme();
+	  }
 
 
 	// background(bgColor);
@@ -641,7 +645,7 @@ function generateXYCMaxFill(index) {
   
 	cx.push(x);
 	cy.push(y);
-  
+
 	letterRotations.push(random(-PI / 12, PI / 12)); 
   }
   

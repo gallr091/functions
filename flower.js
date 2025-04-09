@@ -1,4 +1,3 @@
-// Flower positions and colors
 const flowerPositions = [
 	{ x: 200, y: 450, color: "#a888e8" },
 	{ x: 300, y: 400, color: "#ff8b00" },
@@ -11,16 +10,16 @@ const flowerPositions = [
   
   function setup() {
 	createCanvas(707, 500);
-	// background(255); // Set background color
+	// background(255);
 	drawStemsAndFlowers();
   }
   
   function drawStemsAndFlowers() {
-	stroke("#77a37a"); // Stem color
+	stroke("#77a37a");
 	strokeWeight(3);
 	for (let pos of flowerPositions) {
-	  line(pos.x, height, pos.x, pos.y); // Draw stem
-	  drawFlower(pos.x, pos.y, pos.color); // Draw flower
+	  line(pos.x, height, pos.x, pos.y);
+	  drawFlower(pos.x, pos.y, pos.color); 
 	}
   }
   
@@ -30,13 +29,12 @@ const flowerPositions = [
 	noStroke();
 	fill(color(colorHex));
   
-	// Draw petals
+	
 	for (let i = 0; i < 10; i++) {
 	  ellipse(0, 20, 12.5, 25);
 	  rotate(PI / 5);
 	}
   
-	// Draw center of flower
 	fill("#FFD700");
 	ellipse(0, 0, 20, 20);
 	pop();
