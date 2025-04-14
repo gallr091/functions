@@ -94,9 +94,9 @@ let xMainSlider, yMainSlider, xCaptionSlider, yCaptionSlider;
 let forceRedraw = true;
 
 function preload() {
-	font1 = loadFont("fonts/VTF_Mixo.otf");
-	font2 = loadFont("fonts/Montchauve.otf");
-	font3 = loadFont("fonts/Format_1452.otf");
+	font1 = loadFont("fonts/UnifrakturCook-Bold.ttf");
+	font2 = loadFont("fonts/BrutalMilkNo3-Bold.ttf");
+	font3 = loadFont("fonts/The-Outskirts.ttf");
 	font4 = loadFont("fonts/Gulax-Regular.otf");
   
 	romanticFont = loadFont("fonts/DMSerifDisplay-Regular.ttf");
