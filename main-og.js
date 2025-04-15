@@ -98,8 +98,6 @@ let xMainSlider, yMainSlider, xCaptionSlider, yCaptionSlider;
 let forceRedraw = true;
 
 function preload() {
-	// mainFont = loadFont("Outfit-Variable.ttf");
-
 	font1 = loadFont("fonts/UnifrakturCook-Bold.ttf");
 	font2 = loadFont("fonts/BrutalMilkNo3-Bold.ttf");
 	font3 = loadFont("fonts/The-Outskirts.ttf");
@@ -122,107 +120,54 @@ function preload() {
   }
 
 
-  function setup() {
+function setup() {
+
 	// main container
 	containerDiv = createDiv();
-	containerDiv.addClass('container');
-  
-	// canvas wrapper
-	canvasWrapper = createDiv();
-	canvasWrapper.parent(containerDiv);
-	canvasWrapper.addClass('canvas-wrapper');
-  
-	let canvas = createCanvas(707, 500);
-	canvas.parent(canvasWrapper);
-	canvas.addClass('canvas');
+	containerDiv.addClass('container'); 
 
-	// resizeCanvasToFit();
-  
-	// controls container
-	controlsDiv = createDiv();
-	controlsDiv.addClass('controls');
-	controlsDiv.parent(containerDiv);
-  
-	// tab buttons
-	let tabButtonsDiv = createDiv();
-	tabButtonsDiv.addClass('tab-buttons');
-	tabButtonsDiv.parent(controlsDiv);
-  
-	const tabNames = ['Theme & Text', 'Colors', 'Positions', 'Final'];
-	tabNames.forEach(name => {
-	  let key = name.toLowerCase().replace(/ & /g, '').replace(/\s+/g, '');
-	  let btn = createButton(name);
-	  btn.addClass('tab-button');
-	  btn.parent(tabButtonsDiv);
-	  btn.mousePressed(() => switchTab(key));
-	  tabButtons[key] = btn;
-  
-	  let tabContent = createDiv();
-	  tabContent.addClass('tab-content');
-	  tabContent.parent(controlsDiv);
-	  tabs[key] = tabContent;
-	});
-  
-	switchTab(activeTab);
-  
 	// controls
-	createThemeTextControls(tabs['themetext']);
-	createColorControls(tabs['colors']);
-	createPositionControls(tabs['positions']);
-	createFinalControls(tabs['final']);
-  }
+	controlsDiv = createDiv();
+	controlsDiv.addClass('controls'); 
+	controlsDiv.parent(containerDiv);
+	
+	let topControls = createDiv();
+	topControls.parent(controlsDiv);
+	topControls.addClass('topcontrols');
 
-  function switchTab(tabKey) {
-	for (let key in tabs) {
-	  if (key === tabKey) {
-		tabs[key].show();
-		tabButtons[key].addClass('active');
-	  } else {
-		tabs[key].hide();
-		tabButtons[key].removeClass('active');
-	  }
-	}
-	activeTab = tabKey;
-  }
-  
-  function createThemeTextControls(parent) {
-
-	let inputRow = createDiv();
-	inputRow.addClass('input-row');
-	inputRow.parent(parent);
-
-	// let customSelect = createDiv();
-	// customSelect.addClass('custom-select');
-	// customSelect.parent(inputRow);
-
-	// theme
+	let gridControls = createDiv();
+	gridControls.addClass('gridcontrols');
+	gridControls.parent(topControls);
+	
+	// theme label
 	let themeLabel = createP('Theme');
 	themeLabel.addClass('label');
-	themeLabel.parent(inputRow);
-  
+	themeLabel.parent(gridControls);
+
 	let themeSelector = createSelect();
 	themeSelector.addClass('selector');
-	themeSelector.parent(inputRow);
+	themeSelector.parent(gridControls);
 	themeSelector.option('punk');
 	themeSelector.option('romantic');
 	themeSelector.option('spring');
 	themeSelector.option('gamer');
+	// themeSelector.option('holiday');
 	themeSelector.option('gothic');
 	themeSelector.selected('punk');
+	themeSelector.style('width', '100%');
 	themeSelector.changed(() => {
-	  currentTheme = themeSelector.value();
-	  applyTheme(currentTheme);
-	  forceRedraw = true;
+	currentTheme = themeSelector.value();
+	applyTheme(currentTheme);
+	forceRedraw = true;
 	});
 
 
-	// layout
 	let layoutLabel = createP('Layout Style');
-	layoutLabel.parent(inputRow);
+	layoutLabel.parent(gridControls);
 	layoutLabel.addClass('label');
 
 	layoutSelector = createSelect();
-	layoutSelector.parent(inputRow);
+	layoutSelector.parent(gridControls);
 	layoutSelector.addClass('selector');
 
 	layoutSelector.option('wave');
@@ -239,13 +184,17 @@ function preload() {
 		forceRedraw = true; // layout update
 	});
 
+	let bottomControls = createDiv();
+	bottomControls.addClass('bottom-controls');
+	bottomControls.parent(controlsDiv);
+
 	// name input
 	let mainLabel = createP('Main Text');
 	mainLabel.addClass('label');
-	mainLabel.parent(inputRow);
+	mainLabel.parent(gridControls);
 
 	inp = createInput('');
-	inp.parent(inputRow);
+	inp.parent(gridControls);
 	inp.addClass('input');
 	inp.attribute('placeholder', 'Type a name...');
 	inp.input(() => {
@@ -267,35 +216,24 @@ function preload() {
 
 	// caption input
 	let captionLabel = createP('Caption Text');
-	captionLabel.parent(inputRow);
+	captionLabel.parent(gridControls);
 	captionLabel.addClass('label');
 
 	captionInput = createElement('textarea', captionText);
-	captionInput.parent(inputRow);
+	captionInput.parent(gridControls);
 	captionInput.addClass('caption-input');
 	captionInput.attribute('placeholder', 'Write your message here…');
 	captionInput.input(() => {
 		captionText = captionInput.value();
 	});
-  
-  }
-  
-  function createColorControls(parent) {
 
-
-	let inputRow = createDiv();
-	inputRow.addClass('input-row');
-	inputRow.parent(parent);
-
-	
 	// shape color
 	let rectColorLabel = createP('Shape Color');
 	rectColorLabel.addClass('label');
-	rectColorLabel.parent(inputRow);
+	rectColorLabel.parent(gridControls);
 
 	rectColorPicker = createColorPicker(rectColor);
-	rectColorPicker.addClass('colorpicker');
-	rectColorPicker.parent(inputRow);
+	rectColorPicker.parent(gridControls);
 	rectColorPicker.input(() => {
 		rectColor = rectColorPicker.value();
 	});
@@ -305,11 +243,9 @@ function preload() {
 		let mainColorLabel = createP('Main Text Color');
 		mainColorLabel.addClass('label');
 
-		mainColorLabel.parent(inputRow);
+		mainColorLabel.parent(gridControls);
 		mainColorPicker = createColorPicker(mainTextColor);
-		mainColorPicker.addClass('colorpicker');
-
-		mainColorPicker.parent(inputRow);
+		mainColorPicker.parent(gridControls);
 		mainColorPicker.input(() => {
 		mainTextColor = mainColorPicker.value();
 	});
@@ -317,11 +253,9 @@ function preload() {
 	// caption color
 	let captionColorLabel = createP('Caption Text Color');
 	captionColorLabel.addClass('label');
-	captionColorLabel.parent(inputRow);
+	captionColorLabel.parent(gridControls);
 	captionColorPicker = createColorPicker(captionTextColor);
-	captionColorPicker.parent(inputRow);
-	captionColorPicker.addClass('colorpicker');
-
+	captionColorPicker.parent(gridControls);
 	captionColorPicker.input(() => {
 		captionTextColor = captionColorPicker.value();
 	});
@@ -329,100 +263,105 @@ function preload() {
 	// bg color
 	let bgColorLabel = createP('Background Color');
 	bgColorLabel.addClass('label');
-	bgColorLabel.parent(inputRow);
+	bgColorLabel.parent(gridControls);
 	bgColorPicker = createColorPicker(bgColor);
-	bgColorPicker.parent(inputRow);
-	bgColorPicker.addClass('colorpicker');
-
+	bgColorPicker.parent(gridControls);
 	bgColorPicker.input(() => {
 		bgColor = bgColorPicker.value();
 	});
-  }
-  
-  function createPositionControls(parent) {
 
 
-	let inputRow = createDiv();
-	inputRow.addClass('input-row');
-	inputRow.id('sliderz');
-	inputRow.parent(parent);
-	
-	
 	// sliders
-	let mainXLabel = createP('Main Text Horizontal');
-	mainXLabel.parent(inputRow);
+	let mainXLabel = createP('Main Text Horizontal Position');
+	mainXLabel.parent(gridControls);
 	mainXLabel.addClass('label');
 	xMainSlider = createSlider(0, 700, mainX);
-	xMainSlider.parent(inputRow);
+	xMainSlider.parent(gridControls);
 	xMainSlider.input(() => { 
 		mainX = xMainSlider.value(); 
 	});
 
-	let mainYLabel = createP('Main Text Vertical');
-	mainYLabel.parent(inputRow);
+	let mainYLabel = createP('Main Text Vertical Position');
+	mainYLabel.parent(gridControls);
 	mainYLabel.addClass('label');
 	yMainSlider = createSlider(-60, 400, mainY);
-	yMainSlider.parent(inputRow);
+	yMainSlider.parent(gridControls);
 	yMainSlider.input(() => { 
 		mainY = yMainSlider.value(); 
 	});
 
-	let capXLabel = createP('Caption Horizontal');
-	capXLabel.parent(inputRow);
+	let capXLabel = createP('Caption Horizontal Position');
+	capXLabel.parent(gridControls);
 	capXLabel.addClass('label');
 	xCaptionSlider = createSlider(0, 700, captionX);
-	xCaptionSlider.parent(inputRow);
+	xCaptionSlider.parent(gridControls);
 	xCaptionSlider.input(() => { 
 		captionX = xCaptionSlider.value(); 
 	});
 
-	let capYLabel = createP('Caption Vertical');
-	capYLabel.parent(inputRow);
+	let capYLabel = createP('Caption Vertical Position');
+	capYLabel.parent(gridControls);
 	capYLabel.addClass('label');
 
 	capYLabel.style('color', 'white');
 	yCaptionSlider = createSlider(0, 500, captionY);
-	yCaptionSlider.parent(inputRow);
+	yCaptionSlider.parent(gridControls);
 	yCaptionSlider.input(() => { captionY = yCaptionSlider.value(); });
-  }
-  
-  function createFinalControls(parent) {
+
+	// refresh design button
 	let refreshBtn = createButton('Refresh');
 	refreshBtn.addClass('button');
-	refreshBtn.parent(parent);
-	refreshBtn.mousePressed(() => {
-	  forceRedraw = true;
+	refreshBtn.parent(bottomControls);
+	refreshBtn.mousePressed(() => { 
+		forceRedraw = true; 
 	});
+
+	// save card button
+	button = createButton('Save');
+	button.addClass('button');
+	button.parent(bottomControls);
+	button.mousePressed(() => saveCanvas('greeting-card', 'png'));
+
+	// recipient view button
+	let viewButton = createButton('View as Recipient');
+	viewButton.addClass('button');
+	viewButton.parent(bottomControls);
+	viewButton.mousePressed(openRecipientView);
   
-	let saveBtn = createButton('Save');
-	saveBtn.addClass('button');
-	saveBtn.parent(parent);
-	saveBtn.mousePressed(() => saveCanvas('greeting-card', 'png'));
+	// canvas
+	canvasWrapper = createDiv();
+	canvasWrapper.parent(containerDiv);
+	canvasWrapper.addClass('canvas-wrapper');
+
+	let canvas = createCanvas(707, 500);
+	canvas.parent(canvasWrapper);
+	canvas.addClass('canvas');
+
+	resizeCanvasToFit();
+
+	textSize(50);
+	rectMode(CENTER);
+
+	applyTheme(currentTheme);
+
+}
+
+function resizeCanvasToFit() {
+	let aspectRatio = 707 / 500;
+	let canvasWrapper = select('.canvas-wrapper');
+	let wrapperWidth = canvasWrapper.width;
+	let wrapperHeight = canvasWrapper.height;
   
-	let viewBtn = createButton('View as Recipient');
-	viewBtn.addClass('button');
-	viewBtn.parent(parent);
-	viewBtn.mousePressed(openRecipientView);
+	let newWidth = wrapperWidth;
+	let newHeight = newWidth / aspectRatio;
+  
+	if (newHeight > wrapperHeight) {
+	  newHeight = wrapperHeight;
+	  newWidth = newHeight * aspectRatio;
+	}
+  
+	resizeCanvas(newWidth, newHeight);
   }
-  
-
-
-// function resizeCanvasToFit() {
-// 	let aspectRatio = 707 / 500;
-// 	let canvasWrapper = select('.canvas-wrapper');
-// 	let wrapperWidth = canvasWrapper.width;
-// 	let wrapperHeight = canvasWrapper.height;
-  
-// 	let newWidth = wrapperWidth;
-// 	let newHeight = newWidth / aspectRatio;
-  
-// 	if (newHeight > wrapperHeight) {
-// 	  newHeight = wrapperHeight;
-// 	  newWidth = newHeight * aspectRatio;
-// 	}
-  
-// 	resizeCanvas(newWidth, newHeight);
-//   }
 
 function applyTheme(name) {
 	let theme = themes[name];
