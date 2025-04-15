@@ -496,8 +496,8 @@ function draw() {
 	  
 		  shearAngles.push(random(-PI / 20, PI / 20));
 	  
-		  let w = 60 * random(1, 1.5);
-		  let r = random(5, 25);
+		  let w = 50 * random(1, 1.5);
+		  let r = random(0, 15);
 		  rectSettings.push({ width: w, radius: r });
 		}
 	  
@@ -600,13 +600,13 @@ function generateXYC(index) {
 // WAVE
 function generateXYCWave(index) {
 	const baseSize = 40;
-	const letterSpacing = baseSize * 0.75;
-	const amplitude = random(10, 30);
+	const letterSpacing = baseSize * 1.3;
+	const amplitude = random(10, 20);
 	const frequency = random(0.1, 0.5);
   
 	if (index === 0) {
-	  widther = 30;      
-	  heighter = 100;   
+	  widther = 80;      
+	  heighter = 50;   
 	}
   
 	const char = tagline[index];
@@ -766,8 +766,8 @@ function drawShape(index) {
 	const settings = rectSettings[index];
   
 	if (shapeType === 'rect') {
-	  rect(0, 0, settings.width, 70, settings.radius);
-	}
+	  rect(-30, -40, settings.width * 1.2, settings.width * 1.4, settings.radius);
+	} 
   
 	else if (shapeType === 'heart') {
 	  drawHeart(0, 0, 2);
