@@ -1,8 +1,8 @@
-function setupCard(image) {
-	if (!image) return;
+function setupCard(data) {
+	if (!data || !data.coverImage || !data.insideImage) return;
   
-	document.getElementById('card-front').style.backgroundImage = `url(${image})`;
-	document.getElementById('card-back').style.backgroundImage = `url(${image})`;
+	document.getElementById('card-front').style.backgroundImage = `url(${data.coverImage})`;
+	document.getElementById('card-inside').style.backgroundImage = `url(${data.insideImage})`;
   }
   
   function flipCard() {
@@ -15,7 +15,25 @@ function setupCard(image) {
 	}
   });
   
+  // function setupCard(image) {
+// 	if (!image) return;
+  
+// 	document.getElementById('card-front').style.backgroundImage = `url(${image})`;
+// 	document.getElementById('card-back').style.backgroundImage = `url(${image})`;
+//   }
+  
+//   function flipCard() {
+// 	document.getElementById('card').classList.toggle('flipped');
+//   }
+  
+//   window.addEventListener("message", (event) => {
+// 	if (event.data?.type === "cardDesign") {
+// 	  setupCard(event.data.data);
+// 	}
+//   });
+  
 
+  
 // let params;
 
 // function getQueryParams() {

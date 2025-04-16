@@ -6,7 +6,55 @@ body {
 	align-items: center;
 	height: 100vh;
   }
+/* 
+#card-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 1rem;
+	min-height: 100vh;
+	box-sizing: border-box;
+  } */
+
+  #card {
+	width: 100%;
+	max-width: 707px;
+	aspect-ratio: 707 / 500;
+	margin: 0 auto;
+	position: relative;
+	perspective: 1000px;
+	cursor: pointer;
+	margin: 1rem;
+  }
   
+  
+  #card-front {
+	z-index: 2;
+  }
+  
+  #card.flipped #card-front {
+	transform: rotateX(180deg);
+  }
+  
+  #card-inside {
+	z-index: 1;
+  }
+  
+  #card-front,
+#card-inside {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: top center;
+  transition: transform 0.8s ease;
+  
+  /* backface-visibility: hidden; */
+}
+/*   
   .card {
 	width: 707px;
 	height: 500px;
@@ -41,4 +89,4 @@ body {
   .card-back {
 	transform: rotateX(180deg);
   }
-  
+   */

@@ -282,7 +282,7 @@ function preload() {
 	inp = createInput('');
 	inp.parent(inputRow);
 	inp.addClass('input');
-	inp.attribute('placeholder', 'Type a name...');
+	inp.attribute('placeholder', 'Type a name or greeting...');
 	inp.input(() => {
 		const full = inp.value();
 	  
@@ -308,7 +308,7 @@ function preload() {
 	captionInput = createElement('textarea', captionText);
 	captionInput.parent(inputRow);
 	captionInput.addClass('caption-input');
-	captionInput.attribute('placeholder', 'Write your message here…');
+	captionInput.attribute('placeholder', 'Write your caption here…');
 	captionInput.input(() => {
 		captionText = captionInput.value();
 	});
@@ -456,20 +456,20 @@ function preload() {
 	});
   }
 
-  function updateInsideCanvas() {
-	insideCanvas.clear();
-	insideCanvas.background('#fff'); // or any background color
+//   function updateInsideCanvas() {
+// 	insideCanvas.clear();
+// 	insideCanvas.background('#fff');
   
-	insideCanvas.fill(0);
-	insideCanvas.textAlign(CENTER, TOP);
-	insideCanvas.textSize(24);
+// 	insideCanvas.fill(0);
+// 	insideCanvas.textAlign(CENTER, TOP);
+// 	insideCanvas.textSize(24);
   
-	insideCanvas.text(`To: ${messageTo}`, insideCanvas.width / 2, 100);
-	insideCanvas.textSize(20);
-	insideCanvas.text(messageBody, insideCanvas.width / 2, 160);
-	insideCanvas.textSize(24);
-	insideCanvas.text(`From: ${messageFrom}`, insideCanvas.width / 2, 360);
-  }
+// 	insideCanvas.text(`To: ${messageTo}`, insideCanvas.width / 2, 100);
+// 	insideCanvas.textSize(20);
+// 	insideCanvas.text(messageBody, insideCanvas.width / 2, 160);
+// 	insideCanvas.textSize(24);
+// 	insideCanvas.text(`From: ${messageFrom}`, insideCanvas.width / 2, 360);
+//   }
   
   
 
@@ -919,33 +919,75 @@ function drawShape(index) {
 	return canvas.toDataURL('image/png');
   }
 
-function openRecipientViewLink() {
-	drawInsideCanvas();
+// function openRecipientViewLink() {
+// 	drawInsideCanvas();
   
-	// Export image as base64
-	let insideImage = insideCanvas.canvas.toDataURL();
+// 	// export
+// 	let insideCard = insideCanvas.canvas.toDataURL(); 
+
 	
-	const imageData = canvas.elt.toDataURL("image/png");
+// 	const imageData = canvas.elt.toDataURL("image/png");
+  
+// 	const recipientWindow = window.open("recipient.html", "_blank");
+  
+// 	recipientWindow.onload = () => {
+// 	  recipientWindow.postMessage({
+// 		type: "cardDesign",
+// 		data: imageData
+// 	  }, "*");
+// 	};
+// //   }
+
+//   function openRecipientViewLink() {
+// 	drawInsideCanvas(); 
+  
+// 	const coverImage = canvas.elt.toDataURL("image/png");
+// 	const insideImage = insideCanvas.canvas.toDataURL("image/png");
+  
+// 	const recipientWindow = window.open("recipient.html", "_blank");
+  
+// 	recipientWindow.onload = () => {
+// 	  recipientWindow.postMessage({
+// 		type: "cardDesign",
+// 		data: {
+// 		  coverImage,
+// 		  insideImage
+// 		}
+// 	  }, "*");
+// 	};
+//   }
+  
+
+function openRecipientViewLink() {
+	drawInsideCanvas(); // ensure inside canvas is drawn
+  
+	const coverImage = canvas.elt.toDataURL("image/png");
+	const insideImage = insideCanvas.canvas.toDataURL("image/png");
   
 	const recipientWindow = window.open("recipient.html", "_blank");
   
 	recipientWindow.onload = () => {
 	  recipientWindow.postMessage({
 		type: "cardDesign",
-		data: imageData
+		data: {
+		  coverImage,
+		  insideImage
+		}
 	  }, "*");
 	};
   }
 
+  
   function drawInsideCanvas() {
 	insideCanvas.background(bgColor);
-	insideCanvas.fill(mainTextColor); // or try a hardcoded '#ff0000' to debug
+	insideCanvas.fill(mainTextColor); 
 	insideCanvas.textAlign(LEFT, TOP);
-	insideCanvas.textFont(romanticFont); // ← loaded font only
+	insideCanvas.textFont(springFont); 
 	insideCanvas.textSize(24);
   
+	//ok this works now
 	insideCanvas.text(`To: ${messageTo}`, 50, 80);
-	insideCanvas.text(`${messageBody}`, 50, 140, 600); // text box width
+	insideCanvas.text(`${messageBody}`, 50, 140, 600); 
 	insideCanvas.text(`From: ${messageFrom}`, 50, 380);
   
 	if (activeTab === 'message') {
