@@ -17,7 +17,7 @@ let captionText = "";
 let fontChoices = [];
 let shearAngles = [];
 let rectSettings = [];
-let rectColor = '#fffff';
+let rectColor = '#000000';
 let rectColorPicker;
 
 let insideCanvas;
@@ -37,7 +37,7 @@ let currentLayout = 'wave';
 
 let themeFonts = {};
 
-let mainTextColor = '#000000';
+let mainTextColor = '#ffffff';
 let captionTextColor = '#000000';
 let bgColor = '#ffffff';
 let mainColorPicker, captionColorPicker, bgColorPicker;
@@ -149,9 +149,7 @@ function preload() {
 
 	// message canvas
 	insideCanvas = createGraphics(707, 500); 
-	insideCanvasCanvas = createDiv();
-	insideCanvasCanvas.child(insideCanvas.canvas);
-
+	insideCanvasCanvas = createImg('', 'Inside Message'); 
 	insideCanvasCanvas.parent(canvasWrapper);
 	insideCanvasCanvas.addClass('canvas');
 	insideCanvasCanvas.hide(); 
@@ -209,11 +207,11 @@ function preload() {
   
 	// Canvas switching logic
 	if (tabKey === 'message') {
-	  canvas.hide();
+	  coverCanvas.hide();
 	  drawInsideCanvas(); // update insideCanvas content
 	  insideCanvasCanvas.show();
 	} else {
-	  canvas.show();
+	  coverCanvas.show();
 	  insideCanvasCanvas.hide();
 	}
   
@@ -425,9 +423,8 @@ function preload() {
   function createMessageControls(parent) {
 	let toLabel = createP("To:");
 	toLabel.parent(parent);
-	toInput = createInput('');
+	let toInput = createInput('');
 	toInput.parent(parent);
-	toInput.addClass('input');
 	toInput.input(() => {
 		messageTo = toInput.value();
 		updateInsideCanvas();
@@ -435,10 +432,8 @@ function preload() {
 
 	let messageLabel = createP("Message:");
 	messageLabel.parent(parent);
-	messageInput = createElement('textarea', '');
+	let messageInput = createElement('textarea', '');
 	messageInput.parent(parent);
-	messageInput.addClass('input');
-
 	messageInput.input(() => {
 	  messageBody = messageInput.value();
 	  updateInsideCanvas();
@@ -446,10 +441,8 @@ function preload() {
   
 	let fromLabel = createP("From:");
 	fromLabel.parent(parent);
-	fromInput = createInput('');
+	let fromInput = createInput('');
 	fromInput.parent(parent);
-	fromInput.addClass('input');
-
 	fromInput.input(() => {
 	  messageFrom = fromInput.value();
 	  updateInsideCanvas();
@@ -486,6 +479,10 @@ function preload() {
 	saveBtn.parent(parent);
 	saveBtn.mousePressed(() => saveCanvas('greeting-card', 'png'));
   
+	// let viewBtn = createButton('View as Recipient');
+	// viewBtn.addClass('button');
+	// viewBtn.parent(parent);
+	// viewBtn.mousePressed(openRecipientView);
 	let recipientButton = createButton('Open Recipient View');
 	recipientButton.addClass('button');
 	recipientButton.parent(parent);
@@ -493,6 +490,25 @@ function preload() {
   
   }
   
+
+
+// function resizeCanvasToFit() {
+// 	let aspectRatio = 707 / 500;
+// 	let canvasWrapper = select('.canvas-wrapper');
+// 	let wrapperWidth = canvasWrapper.width;
+// 	let wrapperHeight = canvasWrapper.height;
+  
+// 	let newWidth = wrapperWidth;
+// 	let newHeight = newWidth / aspectRatio;
+  
+// 	if (newHeight > wrapperHeight) {
+// 	  newHeight = wrapperHeight;
+// 	  newWidth = newHeight * aspectRatio;
+// 	}
+  
+// 	resizeCanvas(newWidth, newHeight);
+//   }
+
 function applyTheme(name) {
 	let theme = themes[name];
 	currentLayout = theme.layout;
@@ -508,9 +524,7 @@ function applyTheme(name) {
   
 function draw() {
 
-	if (activeTab === 'message') {
-		drawInsideCanvas();
-	  }
+	if (activeTab === 'message') drawInsideCanvas();
 
 
 	if (currentTheme === 'punk') {
@@ -624,7 +638,8 @@ function draw() {
 	text(captionText, 0, 0);
 	pop();
 }
-  
+
+
 
 // DEFAULT 
 // experiment
@@ -701,6 +716,35 @@ function generateXYCWave(index) {
 	  widther += textWidth(char) + letterSpacing;
 	}
   }
+  
+// function generateXYCWave(index) {
+// 	const baseSize = 40;
+// 	const letterSpacing = baseSize * 0.75;
+// 	const amplitude = random(10, 30);
+// 	const frequency = random(0.1, 0.5);
+  
+// 	if (index === 0) {
+// 	  widther = 30;     
+// 	  heighter = 100;
+// 	}
+  
+// 	const char = tagline[index];
+  
+// 	if (char === " ") {
+// 	  
+// 	  widther = 30;
+// 	  heighter += baseSize + 20;
+// 	  return; 
+// 	}
+  
+// 	const yOffset = sin(widther * frequency) * amplitude;
+  
+// 	cx.push(widther);
+// 	cy.push(heighter + yOffset);
+// 	cratio.push(1);
+  
+// 	widther += textWidth(char) + letterSpacing;
+//   }
   
 
 // GRID
@@ -867,7 +911,7 @@ function drawShape(index) {
 	line(x, y - size / 2, x, y - size / 2 - size * 0.2);
 
 	// fruit
-	fill('#FAD0C1'); // redz
+	fill('#FAD0C1'); // red
 	noStroke();
 	ellipse(x, y, size, size);
   
@@ -885,6 +929,20 @@ function drawShape(index) {
 	}
   }
   
+  
+
+  function drawInsideCanvas() {
+	insideCanvas.background(bgColor);
+	insideCanvas.fill(mainTextColor);
+	insideCanvas.textAlign(LEFT, TOP);
+	insideCanvas.textSize(24);
+  
+	insideCanvas.text(`To: ${messageTo}`, 50, 80);
+	insideCanvas.text(`${messageBody}`, 50, 140, 600); // wrap message
+	insideCanvas.text(`From: ${messageFrom}`, 50, 380);
+  
+	insideCanvasCanvas.elt.src = insideCanvas.canvas.toDataURL();
+  }
   
 
   
@@ -919,13 +977,109 @@ function drawShape(index) {
 	return canvas.toDataURL('image/png');
   }
 
+//   function openRecipientView() {
+// 	const imageData = getCanvasImage();
+// 	const recipientWindow = window.open('', '_blank');
+// 	recipientWindow.document.write(`
+// 	  <!DOCTYPE html>
+// 	  <html lang="en">
+// 	  <head>
+// 		<meta charset="UTF-8">
+// 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+// 		<title>Recipient View</title>
+// 		<style>
+// 		  body {
+// 			margin: 0;
+// 			display: flex;
+// 			justify-content: center;
+// 			align-items: center;
+// 			height: 100vh;
+// 			background-color: #D9DCD6;
+// 		  }
+// 		  .card-container {
+// 			perspective: 1500px;
+// 		  }
+// 		  .card {
+// 			width: 707px;
+// 			height: 500px;
+// 			position: relative;
+// 		  }
+// 		  .card-cover, .card-content {
+// 			position: absolute;
+// 			width: 100%;
+// 			height: 100%;
+// 			backface-visibility: hidden;
+// 		  }
+// 		  .card-cover {
+// 			display: flex;
+// 			justify-content: center;
+// 			align-items: center;
+// 			transform-origin: top;
+// 			transition: transform 1s ease-in-out;
+// 			z-index: 2;
+// 		  }
+// 		  .card-cover img {
+// 			width: 100%;
+// 			height: auto;
+// 		  }
+// 		  .card-content {
+// 			background-color: red;
+// 			display: flex;
+// 			justify-content: center;
+// 			align-items: center;
+// 			transform: rotateX(180deg);
+// 		  }
+// 		  .card:hover .card-cover {
+// 			transform: rotateX(-180deg);
+// 		  }
+// 		</style>
+// 	  </head>
+// 	  <body>
+// 		<div class="card-container">
+// 		  <div class="card">
+// 			<div class="card-cover">
+// 			  <img src="${imageData}" alt="Card Cover">
+// 			</div>
+// 			<div class="card-content">
+// 			  <!-- Inside content here -->
+// 			</div>
+// 		  </div>
+// 		</div>
+// 	  </body>
+// 	  </html>
+// 	`);
+// 	recipientWindow.document.close();
+//   }
+  
+  
+  
+// function openRecipientViewLink() {
+// 	const params = new URLSearchParams({
+// 		text: inp.value(),
+// 		caption: captionInput.value(),
+// 		theme: themeSelector.value(),
+// 		layout: currentLayout,
+// 		bgColor: bgColor,
+// 		mainTextColor: mainTextColor,
+// 		captionTextColor: captionTextColor,
+// 		rectColor: rectColor,
+// 		mainX: mainX,
+// 		mainY: mainY,
+// 		captionX: captionX,
+// 		captionY: captionY
+// 	});
+
+// 	const url = `recipient.html?${params.toString()}`;
+// 	window.open(url, '_blank');
+// }
+
 function openRecipientViewLink() {
-	drawInsideCanvas();
+	drawInsideCanvas(); // ✨ make sure the inside canvas is drawn before exporting
   
 	// Export image as base64
 	let insideImage = insideCanvas.canvas.toDataURL();
 	
-	const imageData = canvas.elt.toDataURL("image/png");
+	const imageData = canvas.elt.toDataURL("image/png"); // Generate base64 PNG
   
 	const recipientWindow = window.open("recipient.html", "_blank");
   
@@ -936,24 +1090,22 @@ function openRecipientViewLink() {
 	  }, "*");
 	};
   }
-
-  function drawInsideCanvas() {
-	insideCanvas.background(bgColor);
-	insideCanvas.fill(mainTextColor); // or try a hardcoded '#ff0000' to debug
-	insideCanvas.textAlign(LEFT, TOP);
-	insideCanvas.textFont(romanticFont); // ← loaded font only
-	insideCanvas.textSize(24);
-  
-	insideCanvas.text(`To: ${messageTo}`, 50, 80);
-	insideCanvas.text(`${messageBody}`, 50, 140, 600); // text box width
-	insideCanvas.text(`From: ${messageFrom}`, 50, 380);
-  
-	if (activeTab === 'message') {
-	  insideCanvas.show();
-	} else {
-	  insideCanvas.hide();
-	}
-  }
   
   
+  
+//   function generateRecipientLink() {
+// 	const params = new URLSearchParams({
+// 	  text: 'Happy Birthday!',
+// 	  caption: 'Wishing you a wonderful day!',
+// 	  theme: 'celebration',
+// 	  layout: 'horizontal',
+// 	  bgColor: '#FFD700',
+// 	  mainTextColor: '#8B0000',
+// 	  captionTextColor: '#000000',
+// 	  rectColor: '#FFFFFF',
+// 	});
+  
+// 	const recipientURL = `recipient.html?${params.toString()}`;
+// 	window.open(recipientURL, '_blank');
+//   }
   
