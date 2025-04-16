@@ -919,47 +919,8 @@ function drawShape(index) {
 	return canvas.toDataURL('image/png');
   }
 
-// function openRecipientViewLink() {
-// 	drawInsideCanvas();
-  
-// 	// export
-// 	let insideCard = insideCanvas.canvas.toDataURL(); 
-
-	
-// 	const imageData = canvas.elt.toDataURL("image/png");
-  
-// 	const recipientWindow = window.open("recipient.html", "_blank");
-  
-// 	recipientWindow.onload = () => {
-// 	  recipientWindow.postMessage({
-// 		type: "cardDesign",
-// 		data: imageData
-// 	  }, "*");
-// 	};
-// //   }
-
-//   function openRecipientViewLink() {
-// 	drawInsideCanvas(); 
-  
-// 	const coverImage = canvas.elt.toDataURL("image/png");
-// 	const insideImage = insideCanvas.canvas.toDataURL("image/png");
-  
-// 	const recipientWindow = window.open("recipient.html", "_blank");
-  
-// 	recipientWindow.onload = () => {
-// 	  recipientWindow.postMessage({
-// 		type: "cardDesign",
-// 		data: {
-// 		  coverImage,
-// 		  insideImage
-// 		}
-// 	  }, "*");
-// 	};
-//   }
-  
-
 function openRecipientViewLink() {
-	drawInsideCanvas(); // ensure inside canvas is drawn
+	drawInsideCanvas(); 
   
 	const coverImage = canvas.elt.toDataURL("image/png");
 	const insideImage = insideCanvas.canvas.toDataURL("image/png");
