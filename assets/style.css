@@ -66,12 +66,12 @@ html, body {
 	font-family: sans-serif;
 	display: flex;
 	flex-direction: column; 
-	gap: 1.5rem;
+	gap: 1rem;
 	/* justify-content: space-between; */
 	/* gap: 10px; */
 	/* height: 70vh; */
 	font-family: "Outfit", sans-serif;
-	height: 20rem;
+	height: 20.5rem;
 }
 
 .tab-buttons {
@@ -105,6 +105,13 @@ html, body {
 	gap: 10px;
   }
   
+  .tab-content p{
+	margin-bottom: 10px;
+  }
+
+  .tab-content input{
+	margin-bottom: 10px;
+  }
 
    .input-row {
 	display: grid;
@@ -121,6 +128,24 @@ html, body {
 	padding: 0.3rem;
   }
 
+
+  .block-row{
+	display: grid;
+	grid-template-columns: 2fr 2fr;
+	/* gap: auto; */
+	justify-content: space-between;
+  }
+
+  #block1, #block2, #block3, #block4{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	/* margin-bottom: 1rem; */
+  }
+
+  #block1, #block2{
+	margin-bottom: 1rem;
+  }
 
   select{
 	background-color: white;
@@ -148,11 +173,13 @@ html, body {
   }
 
   /* reference for styling color picker: https://codepen.io/radiantsunrise08/pen/QWzJRbo */
-  /* input[type="color" i] {
+  input[type="color" i] {
+	/* margin-top: 3px; */
 	border-radius: 50%;
-	inline-size: 40px;
-	block-size: 40px;
+	inline-size: 60px;
+	block-size: 60px;
 	padding: 4px;
+	background: lightgrey;
   border-width: 1px;
   border-style: solid;
   border-color: rgb(153, 153, 153);
@@ -168,16 +195,9 @@ html, body {
   
   input[type="color" i]::-moz-color-swatch {
 	border-radius: 50%;
-  } */
-
-  input.colorpicker{
-	inline-size: auto;
-	block-size: 40px;
-	/* border-style: solid; */
-	/* border-color: rgb(153, 153, 153); */
-	/* border-radius: 50%; */
   }
 
+ 
 
   /* input[type="color" i] {
 	border-radius: 20%;

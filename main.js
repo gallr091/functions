@@ -315,20 +315,34 @@ function preload() {
   
   function createColorControls(parent) {
 
-
 	let inputRow = createDiv();
-	inputRow.addClass('input-row');
+	inputRow.addClass('block-row');
 	inputRow.parent(parent);
 
-	
+	let block1 = createDiv();
+	block1.id('block1');
+	block1.parent(inputRow);
+
+	let block2 = createDiv();
+	block2.id('block3');
+	block2.parent(inputRow);
+
+	let block3 = createDiv();
+	block3.id('block3');
+	block3.parent(inputRow);
+
+	let block4 = createDiv();
+	block4.id('block4');
+	block4.parent(inputRow);
+
 	// shape color
 	let rectColorLabel = createP('Shape Color');
 	rectColorLabel.addClass('label');
-	rectColorLabel.parent(inputRow);
+	rectColorLabel.parent(block1);
 
 	rectColorPicker = createColorPicker(rectColor);
 	rectColorPicker.addClass('colorpicker');
-	rectColorPicker.parent(inputRow);
+	rectColorPicker.parent(block1);
 	rectColorPicker.input(() => {
 		rectColor = rectColorPicker.value();
 	});
@@ -338,11 +352,11 @@ function preload() {
 		let mainColorLabel = createP('Main Text Color');
 		mainColorLabel.addClass('label');
 
-		mainColorLabel.parent(inputRow);
+		mainColorLabel.parent(block2);
 		mainColorPicker = createColorPicker(mainTextColor);
 		mainColorPicker.addClass('colorpicker');
 
-		mainColorPicker.parent(inputRow);
+		mainColorPicker.parent(block2);
 		mainColorPicker.input(() => {
 		mainTextColor = mainColorPicker.value();
 	});
@@ -350,9 +364,9 @@ function preload() {
 	// caption color
 	let captionColorLabel = createP('Caption Text Color');
 	captionColorLabel.addClass('label');
-	captionColorLabel.parent(inputRow);
+	captionColorLabel.parent(block3);
 	captionColorPicker = createColorPicker(captionTextColor);
-	captionColorPicker.parent(inputRow);
+	captionColorPicker.parent(block3);
 	captionColorPicker.addClass('colorpicker');
 
 	captionColorPicker.input(() => {
@@ -362,9 +376,9 @@ function preload() {
 	// bg color
 	let bgColorLabel = createP('Background Color');
 	bgColorLabel.addClass('label');
-	bgColorLabel.parent(inputRow);
+	bgColorLabel.parent(block4);
 	bgColorPicker = createColorPicker(bgColor);
-	bgColorPicker.parent(inputRow);
+	bgColorPicker.parent(block4);
 	bgColorPicker.addClass('colorpicker');
 
 	bgColorPicker.input(() => {
