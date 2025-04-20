@@ -1,5 +1,28 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
 
+
+:root {
+
+	/* Colors */
+	--color-text: #3E3832; 
+	--color-blue: #0033FF;
+	--color-purple: #800080;
+  	--color-offwhite: #FFFAF1;
+
+	/* Fonts */
+	--title-font: "Xanh Mono", serif;
+	--title-font-weight: 400;
+	--title-font-style: normal;
+	--body-font: "JetBrains Mono", serif;
+	--body-font-weight: 400;
+	--body-font-style: normal;
+
+  /* Other */
+  --border-style: 2px dashed black;
+  --transition: 0.3s ease-in-out;  
+}
+
+
 html, body {
 	margin: 0;
 	padding: 0;
@@ -38,8 +61,8 @@ html, body {
 .controls {
 	width: 100vw;
 	padding: 0.5rem;
-	background: #111;
-	color: white;
+	background:#D9CECC;
+	color: #3E3832;
 	font-family: sans-serif;
 	display: flex;
 	flex-direction: column; 
@@ -59,16 +82,17 @@ html, body {
   }
   
   .tab-button {
-	background: black;
-	color: white;
+	background: var(--color-offwhite);
+	color: var(--color-text);
 	padding: 10px;
-	border: 2px solid white;
+	/* border: 2px solid #3E3832; */
 	border-radius: 10px;
 	cursor: pointer;
   }
   
   .tab-button.active {
 	background: #333;
+	color: white;
   }
   
   .tab-content {
@@ -124,7 +148,7 @@ html, body {
   }
 
   /* reference for styling color picker: https://codepen.io/radiantsunrise08/pen/QWzJRbo */
-  input[type="color" i] {
+  /* input[type="color" i] {
 	border-radius: 50%;
 	inline-size: 40px;
 	block-size: 40px;
@@ -144,11 +168,24 @@ html, body {
   
   input[type="color" i]::-moz-color-swatch {
 	border-radius: 50%;
+  } */
+
+  input.colorpicker{
+	inline-size: auto;
+	block-size: 40px;
+	/* border-style: solid; */
+	/* border-color: rgb(153, 153, 153); */
+	/* border-radius: 50%; */
   }
 
 
+  /* input[type="color" i] {
+	border-radius: 20%;
+  } */
+
+
 .label {
-	color: #ffffff;
+	color: var(--color-text);
 	font-size: 14px;
 	align-self: center;
 
@@ -174,8 +211,8 @@ input[type="range"]::-webkit-slider-thumb {
 	background-color: black;
 	border: solid 2px white;
 	border-radius: 100px;
-	height: 1rem;
-	width: 1rem;    
+	height: 2rem;
+	width: 2rem;    
  }
 
  #sliderz{
@@ -215,7 +252,7 @@ button{
 	background: black;
 	color: white;
 	padding: 10px;
-	border: 2px solid white;
+	/* border: 2px solid white; */
 	border-radius: 10px;
 	cursor: pointer;
 	width: 100%;

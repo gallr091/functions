@@ -26,8 +26,6 @@ let messageTo = '';
 let messageFrom = '';
 let messageBody = '';
 
-
-
 let letterRotations = [];
 
 let shouldRedrawPixels = true;
@@ -415,7 +413,6 @@ function preload() {
 	capYLabel.parent(inputRow);
 	capYLabel.addClass('label');
 
-	capYLabel.style('color', 'white');
 	yCaptionSlider = createSlider(0, 500, captionY);
 	yCaptionSlider.parent(inputRow);
 	yCaptionSlider.input(() => { captionY = yCaptionSlider.value(); });
