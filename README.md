@@ -1,5 +1,4 @@
 # Greeting Card Generator
-## by Rice Gallardo
 ### Project 5: Binding for Typography & Interaction 2 (2025)
 
 A greeting card can be a simple yet effective way to celebrate and acknowledge loved ones during special occasions. Yet, picking up a pre-made  card from a store to write on can feel a tad impersonal. A dynamic greeting card generator transforms this experience from generic to meaningful by presenting a personalized, digital alternative (especially when the only way to connect with certain loved ones is online)! 
