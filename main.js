@@ -272,15 +272,15 @@ function preload() {
 		forceRedraw = true; // layout update
 	});
 
-	// name input
+	// main input
 	let mainLabel = createP('Main Text');
-	mainLabel.addClass('label');
 	mainLabel.parent(inputRow);
+	mainLabel.addClass('label');
 
 	inp = createInput('');
 	inp.parent(inputRow);
 	inp.addClass('input');
-	inp.attribute('placeholder', 'Type a name or greeting...');
+	inp.attribute('placeholder', 'Enter a name or greeting...');
 	inp.input(() => {
 		const full = inp.value();
 	  
@@ -388,7 +388,6 @@ function preload() {
   
   function createPositionControls(parent) {
 
-
 	let inputRow = createDiv();
 	inputRow.addClass('input-row');
 	inputRow.id('sliderz');
@@ -434,37 +433,57 @@ function preload() {
   
 
   function createMessageControls(parent) {
+
+	let inputRow = createDiv();
+	inputRow.parent(parent);
+	inputRow.addClass('input-row');
+
 	let toLabel = createP("To:");
-	toLabel.parent(parent);
+	toLabel.parent(inputRow);
+	toLabel.addClass('label');
+
 	toInput = createInput('');
-	toInput.parent(parent);
+	toInput.parent(inputRow);
 	toInput.addClass('input');
+	toInput.attribute('placeholder', 'Enter a name here…');
+
 	toInput.input(() => {
 		messageTo = toInput.value();
 		updateInsideCanvas();
 	  });
 
+	  let fromLabel = createP("From:");
+	  fromLabel.parent(inputRow);
+	  fromLabel.addClass('label');
+
+	  fromInput = createInput('');
+	  fromInput.parent(inputRow);
+	  fromInput.addClass('input');
+	  fromInput.attribute('placeholder', 'Enter your name here…');
+
+  
+	  fromInput.input(() => {
+		messageFrom = fromInput.value();
+		updateInsideCanvas();
+	  });
+
 	let messageLabel = createP("Message:");
 	messageLabel.parent(parent);
+	messageLabel.addClass('label');
+
+
 	messageInput = createElement('textarea', '');
 	messageInput.parent(parent);
 	messageInput.addClass('input');
+	messageInput.attribute('placeholder', 'Write your message here…');
+
 
 	messageInput.input(() => {
 	  messageBody = messageInput.value();
 	  updateInsideCanvas();
 	});
   
-	let fromLabel = createP("From:");
-	fromLabel.parent(parent);
-	fromInput = createInput('');
-	fromInput.parent(parent);
-	fromInput.addClass('input');
 
-	fromInput.input(() => {
-	  messageFrom = fromInput.value();
-	  updateInsideCanvas();
-	});
   }
 
 //   function updateInsideCanvas() {
