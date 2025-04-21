@@ -203,6 +203,13 @@ function preload() {
 	  createMessageControls(tabs['message']);
 	  createFinalControls(tabs['final']);
 	}
+
+	// display active tab on page load
+	if (windowWidth >= 600) {
+		activeTab = 'carddesign';
+	  } else {
+		activeTab = 'themetext';
+	  }
   
 	switchTab(activeTab);
   }
@@ -308,7 +315,7 @@ function preload() {
 	layoutSelector.option('arc');
 	layoutSelector.selected('wave'); // default
 	layoutSelector.option('stacked waves','waveStack');  
-	layoutSelector.option('rotated letters', 'maxFill');    
+	layoutSelector.option('skewed letters', 'maxFill');    
 
 	layoutSelector.style('width', '100%');
 	layoutSelector.changed(() => {
@@ -917,7 +924,7 @@ function drawShape(index) {
 	}
   
 	else if (shapeType === 'pixel') {
-	  rect(0, 0, 70, 70, 2);
+	  rect(-35, -35, 70, 70, 2);
 	}
   
 	else if (shapeType === 'gift') {
@@ -931,8 +938,8 @@ function drawShape(index) {
 	else if (shapeType === 'diamond') {
 		push();
 		translate(-40, -35);
-		// scale(0.5); // optional: to roughly match original diamond size
-		drawBlob(80); // or another size that matches your layout
+		// scale(0.5); 
+		drawBlob(80); 
 		pop();
 	  }
   
