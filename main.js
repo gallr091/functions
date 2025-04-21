@@ -128,6 +128,7 @@ function preload() {
 	holidayFont = loadFont("fonts/NyséTest-Book.otf");
 	gothicFont = loadFont("fonts/UnifrakturCook-Bold.ttf");
 	pixelFont = loadFont("fonts/VCR_OSD_MONO_1.001.ttf");
+	cuteFont = loadFont("fonts/1HoonIcetea_Regular.ttf");
 
 	captionFonts = {
 		default: defaultFont,
@@ -140,7 +141,7 @@ function preload() {
 	};
 
 	themeFonts = {
-		default: defaultFont,
+		default: cuteFont,
 		punk: font2,
 		romantic: romanticFont,
 		spring: springFont,
@@ -288,7 +289,7 @@ function preload() {
 	themeSelector.addClass('selector');
 	themeSelector.parent(inputRow);
 	themeSelector.option('celebration 🥳🎉💫', 'default');
-	themeSelector.option('punk 🤘🏼👽🎶', 'punk');
+	themeSelector.option('punk 🕷️👽🤘🏼', 'punk');
 	themeSelector.option('romantic 💕🥰🫶', 'romantic');
 	themeSelector.option('spring 🌸🐝🌱', 'spring');
 	themeSelector.option('gamer 🎮👾🕹️', 'gamer');

@@ -10,10 +10,36 @@
     <link rel="stylesheet" type="text/css" href="assets/reset.css">
     <link rel="stylesheet" type="text/css" href="assets/style.css">
     <meta charset="utf-8" />
-
   </head>
+
   <body>
     <main>
+      <!-- MODAL -->
+      <div id="welcome-modal" class="modal">
+        <div class="modal-content">
+          <span class="close-button">&times;</span>
+          <h1>Greeting Card Generator</h1>
+          <p>Customize your card with themes, colors, and a personal message. Click around the tabs to explore!</p>
+        </div>
+      </div>
+
+      <!-- Reopen Button (optional) -->
+      <button id="open-modal-btn" class="modal-trigger">Need Help?</button>
+
+    </main>
+
+    <script src="modal.js"></script>
+    <script src="themes/celebration.js"></script>
+    <script src="themes/gamer.js"></script>
+    <script src="themes/romantic.js"></script>
+    <script src="themes/punk.js"></script>
+    <script src="themes/spring.js"></script>
+    <script src="main.js"></script>
+  </body>
+</html>
+
+
+
       <!-- notes:
        - ✅ have the settings be on the bottom and the design on top for mobile
        - ✅ have tabs for different controls (text, color, position - like picrew)
@@ -40,13 +66,3 @@
        - extra?? add simple/default style lol
        - extra?? figure out how to actually make a link for recipient view
        -->
-    </main>
-    <script src="themes/celebration.js"></script>
-    <script src="themes/gamer.js"></script>
-    <script src="themes/romantic.js"></script>
-    <script src="themes/punk.js"></script>
-    <script src="themes/spring.js"></script>
-    <script src="main.js"></script>
-  </body>
-</html>
-

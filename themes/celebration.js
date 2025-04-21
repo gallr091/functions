@@ -26,8 +26,8 @@ function setupConfetti() {
       angle: random(TWO_PI),
       color: color(...random(colors)),
       form: floor(random(3)), // 0 = blob, 1 = ellipse, 2 = rectangle
-	  xrect: random(0.6, 1.2),
-	  yrect: random(0.4, 1),
+      xrect: random(0.6, 1.2),
+      yrect: random(0.4, 1),
     });
   }
 }
