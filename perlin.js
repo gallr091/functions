@@ -12,7 +12,6 @@ function setup() {
 // perlin.js
 
 function drawPerlinBackground() {
-	background(0);
 	let cols = width / size;
 	let rows = height / size;
 	let noiseScale = 0.1;
@@ -25,11 +24,12 @@ function drawPerlinBackground() {
 		let noiseVal = noise(i * noiseScale, j * noiseScale, zoff);
 		let circleSize = map(noiseVal, 0, 1, 0, size * 1.7);
 		let grey = map(noiseVal, 0, 1, 100, 255); 
-		fill(100);
+		let alpha = map(noiseVal, 0, 1, 80, 180); // transparent effect
+
+		fill(grey, alpha);
 		noStroke();
 		ellipse(x, y, circleSize, circleSize);
 	  }
 	}
 	zoff += 0.01; 
-  }
-  
+}

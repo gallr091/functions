@@ -37,7 +37,7 @@ let themeFonts = {};
 
 let mainTextColor = '#000000';
 let captionTextColor = '#fffff';
-let bgColor = '#ffffff';
+let bgColor = '#000000';
 let mainColorPicker, captionColorPicker, bgColorPicker;
 
 let currentTheme = 'punk'; // default 
@@ -60,7 +60,7 @@ const themes = {
     shape: 'heart',
     bgColor: '#fff0f5',
     mainTextColor: '#c71585',
-    captionTextColor: '#800000',
+    captionTextColor: '#c71585',
     rectColor: '#ffb6c1'
   },
   spring: {
@@ -70,7 +70,7 @@ const themes = {
     shape: 'circle',
     bgColor: '#f0fff0',
     mainTextColor: '#567c57',
-    captionTextColor: '#6b8e23',
+    captionTextColor: '#a17373',
     rectColor: '#ffe4e1'
   },
   gamer: {
@@ -301,8 +301,8 @@ function preload() {
 	// layoutSelector.option('spiral');
 	layoutSelector.option('arc');
 	layoutSelector.selected('wave'); // default
-	layoutSelector.option('waveStack');  
-	layoutSelector.option('maxFill');    
+	layoutSelector.option('stacked waves','waveStack');  
+	layoutSelector.option('rotated letters', 'maxFill');    
 
 	layoutSelector.style('width', '100%');
 	layoutSelector.changed(() => {
@@ -587,6 +587,7 @@ function draw() {
 
 
 	if (currentTheme === 'punk') {
+		background(bgColor); 
 		drawPerlinBackground();
 	  } else {
 		background(bgColor); 
@@ -1021,7 +1022,7 @@ function openRecipientViewLink() {
   
   function drawInsideCanvas() {
 	insideCanvas.background(bgColor);
-	insideCanvas.fill(mainTextColor); 
+	insideCanvas.fill(captionTextColor); 
 	insideCanvas.textAlign(LEFT, TOP);
 
 	const insideFont = captionFonts[currentTheme];

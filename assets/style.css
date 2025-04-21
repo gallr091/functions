@@ -15,6 +15,7 @@
 	--body-font: "Outfit", sans-serif;
 	--body-font-weight: 400;
 	--body-font-style: normal;
+	--body-font-size: 14px;
 
   /* Other */
   --border-style: 2px dashed black;
@@ -130,7 +131,7 @@ html, body {
 
   .caption-input::placeholder, .input::placeholder{
 	opacity: 50%;
-	font-size: 14px;
+	font-size: var(--body-font-size);
   }
 
   .block-row{
@@ -210,7 +211,7 @@ html, body {
 
 .label {
 	color: var(--color-text);
-	font-size: 14px;
+	font-size: var(--body-font-size);
 	align-self: center;
 }
 
@@ -294,7 +295,7 @@ button{
 @media screen and (min-width: 600px) {
 
 	.container{
-	flex-direction: row-reverse;
+		flex-direction: row-reverse;
 	}
 
 	.canvas-wrapper{
