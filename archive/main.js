@@ -6,17 +6,18 @@ let activeTab = 'themeText';
 
 let tagline = ["H", "e", "l", "l", "o"];
 
-let romanticFont, springFont, gamerFont, holidayFont, defaultFont;
+let romanticFont, springFont, gamerFont, holidayFont, gothicFont;
 
 let button, inp, controlsDiv, containerDiv, canvasWrapper;
 let font1, font2, font3, font4;
 let widther, heighter, waver, glitch, maxIndex, maxim;
 let cx = [], cy = [], cratio = [];
 let captionInput;
-let captionText = "Have a good day!";
+let captionText = "Nice to meet you!";
 let fontChoices = [];
 let shearAngles = [];
 let rectSettings = [];
+let rectColor = '#fffff';
 let rectColorPicker;
 
 let insideCanvas;
@@ -30,30 +31,18 @@ let letterRotations = [];
 let shouldRedrawPixels = true;
 
 let layoutSelector;
-let currentLayout = 'arc';
+let currentLayout = 'wave';
 
 let themeFonts = {};
 
-let rectColor = '#FF66AA';
-let mainTextColor = '#edf7ff';
-let captionTextColor = '#197dbe';
-let bgColor = '#FFFCF5';
+let mainTextColor = '#000000';
+let captionTextColor = '#fffff';
+let bgColor = '#000000';
 let mainColorPicker, captionColorPicker, bgColorPicker;
 
-let currentTheme = 'default'; // celebration theme = default
+let currentTheme = 'punk'; // default 
 
 const themes = {
-
-	default: {
-		layout: 'arc',
-		font: 'default',
-		shape: 'diamond',
-		bgColor: '#FFFCF5',
-		mainTextColor: '#edf7ff',
-		captionTextColor: '#197dbe',
-		rectColor: '#FF66AA'
-	  },
-	
   punk: {
     layout: 'wave',
     font: 'random', 
@@ -103,12 +92,20 @@ const themes = {
     captionTextColor: '#004225',
     rectColor: '#d2691e'
   },
- 
+  gothic: {
+    layout: 'waveStack',
+    font: 'gothic',
+    shape: 'diamond',
+    bgColor: '#0a0a0a',
+    mainTextColor: '#ff0000',
+    captionTextColor: '#aaaaaa',
+    rectColor: '#1c1c1c'
+  }
 };
 
 
-let mainX = 150, mainY = 240;
-let captionX = 400, captionY = 300;
+let mainX = 150, mainY = 150;
+let captionX = 230, captionY = 300;
 let xMainSlider, yMainSlider, xCaptionSlider, yCaptionSlider;
 let forceRedraw = true;
 
@@ -121,7 +118,6 @@ function preload() {
 	font4 = loadFont("fonts/Gulax-Regular.otf");
 	font5 = loadFont("fonts/BrutalMilkNo3-Medium.ttf")
   
-	defaultFont = loadFont("fonts/SpaceGrotesk-Medium.ttf");
 	romanticFont = loadFont("fonts/DMSerifDisplay-Regular.ttf");
 	springFont = loadFont("fonts/Moulay-Regular.otf");
 	gamerFont = loadFont("fonts/DigiBop-Regular.otf");
@@ -130,7 +126,6 @@ function preload() {
 	pixelFont = loadFont("fonts/VCR_OSD_MONO_1.001.ttf");
 
 	captionFonts = {
-		default: defaultFont,
 		punk: font5,
 		romantic: romanticFont,
 		spring: springFont,
@@ -140,7 +135,6 @@ function preload() {
 	};
 
 	themeFonts = {
-		default: defaultFont,
 		punk: font2,
 		romantic: romanticFont,
 		spring: springFont,
@@ -280,12 +274,12 @@ function preload() {
 	let themeSelector = createSelect();
 	themeSelector.addClass('selector');
 	themeSelector.parent(inputRow);
-	themeSelector.option('celebration 🥳🎉💫', 'default');
 	themeSelector.option('punk 🤘🏼👽🎶', 'punk');
 	themeSelector.option('romantic 💕🥰🫶', 'romantic');
 	themeSelector.option('spring 🌸🐝🌱', 'spring');
 	themeSelector.option('gamer 🎮👾🕹️', 'gamer');
-	themeSelector.selected('default');
+	// themeSelector.option('gothic');
+	themeSelector.selected('punk');
 	themeSelector.changed(() => {
 	  currentTheme = themeSelector.value();
 	  applyTheme(currentTheme);
@@ -624,10 +618,6 @@ function draw() {
 		drawGamerTheme();
 	  }
 
-	  if (currentTheme === 'default') {
-		drawConfettiBackground();
-	  }
-
 
 	// background(bgColor);
 
@@ -892,8 +882,6 @@ function drawShape(index) {
 	let isMaxFill = currentLayout === 'maxFill';
 	let scaleFactor = isMaxFill ? 2.5 : 1;  
 
-	
-
 	push();
 	noStroke();
 	fill(rectColor);
@@ -929,29 +917,16 @@ function drawShape(index) {
 	}
 
 	else if (shapeType === 'diamond') {
-		push();
-		translate(-40, -35);
-		// scale(0.5); // optional: to roughly match original diamond size
-		drawBlob(80); // or another size that matches your layout
-		pop();
+		beginShape();
+		vertex(0, -50);  // top
+		vertex(50, 0);   // right
+		vertex(0, 50);   // bottom
+		vertex(-50, 0);  // left
+		endShape(CLOSE);
 	  }
   
 	pop();
   }
-
-  function drawBlob(size) {
-	let dip = 0.34 * size;
-	let drop = 0.06 * size;
-  
-	beginShape();
-	vertex(0, 0);
-	bezierVertex(dip, drop, size - dip, drop, size, 0);
-	bezierVertex(size - drop, dip, size - drop, size - dip, size, size);
-	bezierVertex(size - dip, size - drop, dip, size - drop, 0, size);
-	bezierVertex(drop, size - dip, drop, dip, 0, 0);
-	endShape();
-  }
-  
 
   function drawHeart(x, y, s) {
 	push();

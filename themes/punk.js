@@ -1,3 +1,7 @@
+// I modified a previous p5.js sketch I made: https://editor.p5js.org/gallr091/sketches/HcjP0fhzR
+// My original sketch was created following a tutorial on Perlin Noise by Patt Vira: https://www.youtube.com/watch?v=XevTlomtG3g
+// I learned about Perlin noise last semester. It creates a more natural 'rhythm' compared to just straight up using randomness. The differences in random values can be stark whereas Perlin noise generates values that change more gradually. So this halftone effect is the result of brighter, larger, more visible dots clustering together naturally where noise values are higher
+
 let cols, rows;
 let size = 10;
 let noiseScale = 0.1;

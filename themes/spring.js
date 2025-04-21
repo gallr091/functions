@@ -1,3 +1,5 @@
+// I modified a previous p5.js sketch I made: https://editor.p5js.org/gallr091/sketches/rETe8rkv4
+
 const flowerPositions = [
 	{ x: 200, y: 450, color: "#a888e8" },
 	{ x: 300, y: 400, color: "#ff8b00" },
