@@ -63,7 +63,6 @@ html, body {
 	padding: 0.5rem;
 	background:#D9CECC;
 	color: #3E3832;
-	font-family: sans-serif;
 	display: flex;
 	flex-direction: column; 
 	gap: 1rem;
@@ -258,8 +257,9 @@ input[type="range"]::-webkit-slider-thumb {
 
 .selector{
 	width: 50%;
-} */
+} 
 /* 
+
 .gridcontrols{
 	display: grid;
 	grid-template-columns: 1fr 1fr;

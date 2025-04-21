@@ -46,6 +46,7 @@ const themes = {
   punk: {
     layout: 'wave',
     font: 'random', 
+	captionFont: 'punk',
     shape: 'rect',
     bgColor: '#000000',
     mainTextColor: '#000000',
@@ -55,6 +56,7 @@ const themes = {
   romantic: {
 	layout: 'waveStack',
     font: 'romantic',
+	captionFont: 'romantic',
     shape: 'heart',
     bgColor: '#fff0f5',
     mainTextColor: '#c71585',
@@ -64,6 +66,7 @@ const themes = {
   spring: {
     layout: 'grid',
     font: 'spring',
+	captionFont: 'spring',
     shape: 'circle',
     bgColor: '#f0fff0',
     mainTextColor: '#567c57',
@@ -73,6 +76,7 @@ const themes = {
   gamer: {
 	layout: 'maxFill',
     font: 'gamer',
+	captionFont: 'pixel',
     shape: 'pixel',
     bgColor: '#000000',
     mainTextColor: '#EDEDED',
@@ -118,13 +122,24 @@ function preload() {
 	gamerFont = loadFont("fonts/DigiBop-Regular.otf");
 	holidayFont = loadFont("fonts/NyséTest-Book.otf");
 	gothicFont = loadFont("fonts/UnifrakturCook-Bold.ttf");
+	pixelFont = loadFont("fonts/VCR_OSD_MONO_1.001.ttf");
+
+	captionFonts = {
+		punk: font2,
+		romantic: romanticFont,
+		spring: springFont,
+		gamer: pixelFont,
+		holiday: holidayFont,
+		gothic: gothicFont,
+	};
 
 	themeFonts = {
+		punk: font2,
 		romantic: romanticFont,
 		spring: springFont,
 		gamer: gamerFont,
 		holiday: holidayFont,
-		gothic: gothicFont
+		gothic: gothicFont,
 	  };
 	  
   }
@@ -644,15 +659,22 @@ function draw() {
 	pop();
 
 	// caption text
-	push();
-	translate(captionX, captionY);
-	fill(captionTextColor);
-	noStroke();
-	textSize(16);
-	textLeading(20);
-	textAlign(LEFT, TOP);
-	text(captionText, 0, 0);
-	pop();
+		push();
+		translate(captionX, captionY);
+		fill(captionTextColor);
+
+		if (captionFonts && captionFonts[currentTheme]) {
+		textFont(captionFonts[currentTheme]);
+		} else {
+		textFont('Helvetica'); // fallback if not found
+		}
+
+		textSize(40);
+		textLeading(20);
+		textAlign(LEFT, TOP);
+		text(captionText, 0, 0);
+		pop();
+
 }
   
 
@@ -973,13 +995,20 @@ function openRecipientViewLink() {
 	insideCanvas.background(bgColor);
 	insideCanvas.fill(mainTextColor); 
 	insideCanvas.textAlign(LEFT, TOP);
-	insideCanvas.textFont(springFont); 
+
+	const insideFont = captionFonts[currentTheme];
+	if (insideFont) {
+	  insideCanvas.textFont(insideFont);
+	} else {
+	  insideCanvas.textFont(springFont); 
+	}
+	  
 	insideCanvas.textSize(24);
   
 	//ok this works now
-	insideCanvas.text(`To: ${messageTo}`, 50, 80);
+	insideCanvas.text(`To:   ${messageTo}`, 50, 80);
 	insideCanvas.text(`${messageBody}`, 50, 140, 600); 
-	insideCanvas.text(`From: ${messageFrom}`, 50, 380);
+	insideCanvas.text(`From:   ${messageFrom}`, 50, 380);
   
 	if (activeTab === 'message') {
 	  insideCanvas.show();
