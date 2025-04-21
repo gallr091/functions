@@ -104,8 +104,8 @@ const themes = {
 };
 
 
-let mainX = 60, mainY = 150;
-let captionX = 60, captionY = 100;
+let mainX = 150, mainY = 150;
+let captionX = 230, captionY = 300;
 let xMainSlider, yMainSlider, xCaptionSlider, yCaptionSlider;
 let forceRedraw = true;
 
@@ -144,81 +144,74 @@ function preload() {
 	  };
 	  
   }
-
-
   function setup() {
-	// main container
-	containerDiv = createDiv();
-	containerDiv.addClass('container');
+	containerDiv = createDiv().addClass('container');
   
 	// canvas wrapper
-	canvasWrapper = createDiv();
-	canvasWrapper.parent(containerDiv);
-	canvasWrapper.addClass('canvas-wrapper');
+	canvasWrapper = createDiv().parent(containerDiv).addClass('canvas-wrapper');
+	canvas = createCanvas(707, 500).parent(canvasWrapper).addClass('canvas');
   
-	// main design
-	canvas = createCanvas(707, 500);
-	canvas.parent(canvasWrapper);
-	canvas.addClass('canvas');
-
-	// message canvas
-	insideCanvas = createGraphics(707, 500); 
-	insideCanvasCanvas = createDiv();
+	insideCanvas = createGraphics(707, 500);
+	insideCanvasCanvas = createDiv().id('insidecanvas').addClass('canvas').parent(canvasWrapper);
 	insideCanvasCanvas.child(insideCanvas.canvas);
-
-	insideCanvasCanvas.parent(canvasWrapper);
-	insideCanvasCanvas.addClass('canvas');
-	insideCanvasCanvas.hide(); 
-
+	insideCanvasCanvas.hide();
 	drawInsideCanvas();
-
-
-	// resizeCanvasToFit();
   
 	// controls container
-	controlsDiv = createDiv();
-	controlsDiv.addClass('controls');
-	controlsDiv.parent(containerDiv);
+	controlsDiv = createDiv().addClass('controls').parent(containerDiv);
+	let tabButtonsDiv = createDiv().addClass('tab-buttons').parent(controlsDiv);
   
-	// tab buttons
-	let tabButtonsDiv = createDiv();
-	tabButtonsDiv.addClass('tab-buttons');
-	tabButtonsDiv.parent(controlsDiv);
+	const isDesktop = windowWidth >= 600;
   
-	const tabNames = ['Theme & Text', 'Colors', 'Positions', 'Message','Final'];
+	const tabNames = isDesktop
+	  ? ['Card Design', 'Message']
+	  : ['Theme & Text', 'Colors', 'Positions', 'Message', 'Final'];
+  
 	tabNames.forEach(name => {
-	  let key = name.toLowerCase().replace(/ & /g, '').replace(/\s+/g, '');
-	  let btn = createButton(name);
-	  btn.addClass('tab-button');
-	  btn.parent(tabButtonsDiv);
+	  const key = name.toLowerCase().replace(/ & /g, '').replace(/\s+/g, '');
+	  const btn = createButton(name)
+		.addClass('tab-button')
+		.attribute('data-tab', key)
+		.parent(tabButtonsDiv);
 	  btn.mousePressed(() => switchTab(key));
 	  tabButtons[key] = btn;
   
-	  let tabContent = createDiv();
-	  tabContent.addClass('tab-content');
-	  tabContent.parent(controlsDiv);
+	  const tabContent = createDiv().addClass('tab-content').parent(controlsDiv);
 	  tabs[key] = tabContent;
 	});
   
+	// desktop layout 
+	if (isDesktop) {
+	  const cardDesignGroup = createDiv().id('carddesign-controls').parent(tabs['carddesign']);
+	  createThemeTextControls(cardDesignGroup);
+	  createColorControls(cardDesignGroup);
+	  createPositionControls(cardDesignGroup);
+  
+	  const messageGroup = createDiv().id('message-controls').parent(tabs['message']);
+	  createMessageControls(messageGroup);
+	  createFinalControls(messageGroup);
+	} else {
+	  createThemeTextControls(tabs['themetext']);
+	  createColorControls(tabs['colors']);
+	  createPositionControls(tabs['positions']);
+	  createMessageControls(tabs['message']);
+	  createFinalControls(tabs['final']);
+	}
+  
 	switchTab(activeTab);
-  
-	// controls
-	createThemeTextControls(tabs['themetext']);
-	createColorControls(tabs['colors']);
-	createPositionControls(tabs['positions']);
-	createMessageControls(tabs['message']);
-	createFinalControls(tabs['final']);
-
-	//media query
-	if (windowWidth >= 600) {
-		for (let key in tabs) {
-		  tabs[key].show();
-		}
-	  }
   }
-  
+
   function switchTab(tabKey) {
-	// Always toggle canvases, even on desktop
+	for (let key in tabs) {
+	  if (key === tabKey) {
+		tabs[key].show();
+		tabButtons[key].addClass('active');
+	  } else {
+		tabs[key].hide();
+		tabButtons[key].removeClass('active');
+	  }
+	}
+  
 	if (tabKey === 'message') {
 	  canvas.hide();
 	  drawInsideCanvas();
@@ -228,23 +221,9 @@ function preload() {
 	  insideCanvasCanvas.hide();
 	}
   
-	// Only update tab visibility & active button on mobile
-	if (windowWidth < 600) {
-	  for (let key in tabs) {
-		if (key === tabKey) {
-		  tabs[key].show();
-		  tabButtons[key].addClass('active');
-		} else {
-		  tabs[key].hide();
-		  tabButtons[key].removeClass('active');
-		}
-	  }
-	}
-  
 	activeTab = tabKey;
   }
   
-
 //   function switchTab(tabKey) {
 
 // 	//media query
@@ -295,10 +274,10 @@ function preload() {
 	let themeSelector = createSelect();
 	themeSelector.addClass('selector');
 	themeSelector.parent(inputRow);
-	themeSelector.option('punk');
-	themeSelector.option('romantic');
-	themeSelector.option('spring');
-	themeSelector.option('gamer');
+	themeSelector.option('punk 🤘🏼👽🎶', 'punk');
+	themeSelector.option('romantic 💕🥰🫶', 'romantic');
+	themeSelector.option('spring 🌸🐝🌱', 'spring');
+	themeSelector.option('gamer 🎮👾🕹️', 'gamer');
 	// themeSelector.option('gothic');
 	themeSelector.selected('punk');
 	themeSelector.changed(() => {
@@ -497,6 +476,10 @@ function preload() {
 	inputRow.parent(parent);
 	inputRow.addClass('input-row');
 
+	let messageBlock = createDiv();
+	messageBlock.parent(parent);
+	messageBlock.addClass('message-block');
+
 	let toLabel = createP("To:");
 	toLabel.parent(inputRow);
 	toLabel.addClass('label');
@@ -526,13 +509,14 @@ function preload() {
 		updateInsideCanvas();
 	  });
 
+
 	let messageLabel = createP("Message:");
-	messageLabel.parent(parent);
+	messageLabel.parent(messageBlock);
 	messageLabel.addClass('label');
 
 
 	messageInput = createElement('textarea', '');
-	messageInput.parent(parent);
+	messageInput.parent(messageBlock);
 	messageInput.addClass('input');
 	messageInput.attribute('placeholder', 'Write your message here…');
 
@@ -713,7 +697,7 @@ function draw() {
 		textFont('Helvetica'); // fallback if not found
 		}
 
-		textSize(40);
+		textSize(30);
 		textLeading(20);
 		textAlign(LEFT, TOP);
 		text(captionText, 0, 0);

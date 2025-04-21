@@ -6,12 +6,13 @@
 	/* Colors */
 	--color-text: #3E3832; 
   	--color-offwhite: #FFFAF1;
+	--color-controls: #D9CECC;
 
 	/* Fonts */
 	--title-font: "Xanh Mono", serif;
 	--title-font-weight: 400;
 	--title-font-style: normal;
-	--body-font: "JetBrains Mono", serif;
+	--body-font: "Outfit", sans-serif;
 	--body-font-weight: 400;
 	--body-font-style: normal;
 
@@ -59,8 +60,8 @@ html, body {
 .controls {
 	width: 100vw;
 	padding: 0.5rem;
-	background:#D9CECC;
-	color: #3E3832;
+	background: var(--color-controls);
+	color: var(--color-text);
 	display: flex;
 	flex-direction: column; 
 	gap: 1rem;
@@ -88,8 +89,8 @@ html, body {
   }
   
   .tab-button.active {
-	background: #333;
-	color: white;
+	background: var(--color-text);
+	color: var(--color-offwhite);
   }
   
   .tab-content {
@@ -114,7 +115,7 @@ html, body {
 	display: grid;
 	grid-template-columns: 1fr 2fr;
 	gap: 10px;
-	margin-bottom: 10px;
+	/* margin-bottom: 10px; */
   }
 
   .input, .caption-input {
@@ -123,9 +124,9 @@ html, body {
 	background-color: white;
 	color: black;
 	padding: 0.3rem;
+	height: 40px;
   }
 
-  
 
   .caption-input::placeholder, .input::placeholder{
 	opacity: 50%;
@@ -230,8 +231,8 @@ input[type="range" i] {
 input[type="range"]::-webkit-slider-thumb {
 	-webkit-appearance: none; 
 	appearance: none;
-	background-color: black;
-	border: solid 2px white;
+	background-color: var(--color-text);
+	border: solid 2px var(--color-offwhite);
 	border-radius: 100px;
 	height: 2rem;
 	width: 2rem;    
@@ -244,7 +245,7 @@ input[type="range"]::-webkit-slider-thumb {
  }
 
  textarea.input{
-	height: 90px;
+	height: 85px;
 	resize: vertical;
  }
 /* .topcontrols{
@@ -302,7 +303,7 @@ button{
 	}
 
 	.canvas{
-		transform: scale(0.7);
+		transform: scale(1);
 		/* height: 100%; */
 	}
 
@@ -312,17 +313,22 @@ button{
 		padding:1rem;
 	}
 
-	.tab-buttons {
+	/* .tab-buttons {
 		display: none;
 	  }
-	
-	  .tab-content {
+	 */
+	  /* .tab-content {
 		display: block !important;
-	  }
+	  } */
+
+	  /* .input-row{
+		margin-bottom: 3rem;
+	  } */
 
 	  .block-row{
 		display: flex;
 		justify-content: space-evenly;
+		/* margin-bottom: 3rem; */
 	  }
 
 	  .block-row p{
@@ -333,7 +339,27 @@ button{
 		inline-size: 40px;
 		block-size: 40px;
 		padding: 2px;
-
 	  }
+
+	  .canvas-wrapper {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0rem;
+	  }
+
+	  #carddesign-controls {
+		display: flex;
+		flex-direction: column;
+		gap: 2rem;
+	  }
+
+	  .message-block{
+		margin-bottom: 3rem;
+	  }
+	  
+	  /* #insidecanvas{
+		margin-top: -10rem;
+	  } */
+	  
 	
 }
