@@ -5,8 +5,6 @@
 
 	/* Colors */
 	--color-text: #3E3832; 
-	--color-blue: #0033FF;
-	--color-purple: #800080;
   	--color-offwhite: #FFFAF1;
 
 	/* Fonts */
@@ -314,5 +312,28 @@ button{
 		padding:1rem;
 	}
 
+	.tab-buttons {
+		display: none;
+	  }
+	
+	  .tab-content {
+		display: block !important;
+	  }
+
+	  .block-row{
+		display: flex;
+		justify-content: space-evenly;
+	  }
+
+	  .block-row p{
+		text-align: center;
+	  }
+
+	  input[type="color" i] {
+		inline-size: 40px;
+		block-size: 40px;
+		padding: 2px;
+
+	  }
 	
 }

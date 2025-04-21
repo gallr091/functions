@@ -13,7 +13,7 @@ let font1, font2, font3, font4;
 let widther, heighter, waver, glitch, maxIndex, maxim;
 let cx = [], cy = [], cratio = [];
 let captionInput;
-let captionText = "";
+let captionText = "Nice to meet you!";
 let fontChoices = [];
 let shearAngles = [];
 let rectSettings = [];
@@ -36,7 +36,7 @@ let currentLayout = 'wave';
 let themeFonts = {};
 
 let mainTextColor = '#000000';
-let captionTextColor = '#000000';
+let captionTextColor = '#fffff';
 let bgColor = '#ffffff';
 let mainColorPicker, captionColorPicker, bgColorPicker;
 
@@ -116,6 +116,7 @@ function preload() {
 	font2 = loadFont("fonts/BrutalMilkNo3-Bold.ttf");
 	font3 = loadFont("fonts/The-Outskirts.ttf");
 	font4 = loadFont("fonts/Gulax-Regular.otf");
+	font5 = loadFont("fonts/BrutalMilkNo3-Medium.ttf")
   
 	romanticFont = loadFont("fonts/DMSerifDisplay-Regular.ttf");
 	springFont = loadFont("fonts/Moulay-Regular.otf");
@@ -125,7 +126,7 @@ function preload() {
 	pixelFont = loadFont("fonts/VCR_OSD_MONO_1.001.ttf");
 
 	captionFonts = {
-		punk: font2,
+		punk: font5,
 		romantic: romanticFont,
 		spring: springFont,
 		gamer: pixelFont,
@@ -207,31 +208,74 @@ function preload() {
 	createPositionControls(tabs['positions']);
 	createMessageControls(tabs['message']);
 	createFinalControls(tabs['final']);
-  }
 
-  function switchTab(tabKey) {
-	for (let key in tabs) {
-	  if (key === tabKey) {
-		tabs[key].show();
-		tabButtons[key].addClass('active');
-	  } else {
-		tabs[key].hide();
-		tabButtons[key].removeClass('active');
+	//media query
+	if (windowWidth >= 600) {
+		for (let key in tabs) {
+		  tabs[key].show();
+		}
 	  }
-	}
+  }
   
-	// Canvas switching logic
+  function switchTab(tabKey) {
+	// Always toggle canvases, even on desktop
 	if (tabKey === 'message') {
 	  canvas.hide();
-	  drawInsideCanvas(); // update insideCanvas content
+	  drawInsideCanvas();
 	  insideCanvasCanvas.show();
 	} else {
 	  canvas.show();
 	  insideCanvasCanvas.hide();
 	}
   
+	// Only update tab visibility & active button on mobile
+	if (windowWidth < 600) {
+	  for (let key in tabs) {
+		if (key === tabKey) {
+		  tabs[key].show();
+		  tabButtons[key].addClass('active');
+		} else {
+		  tabs[key].hide();
+		  tabButtons[key].removeClass('active');
+		}
+	  }
+	}
+  
 	activeTab = tabKey;
   }
+  
+
+//   function switchTab(tabKey) {
+
+// 	//media query
+// 	if (windowWidth >= 800) {
+// 		// On desktop, ignore tab switching logic
+// 		return;
+// 	  }
+
+	  
+// 	for (let key in tabs) {
+// 	  if (key === tabKey) {
+// 		tabs[key].show();
+// 		tabButtons[key].addClass('active');
+// 	  } else {
+// 		tabs[key].hide();
+// 		tabButtons[key].removeClass('active');
+// 	  }
+// 	}
+  
+// 	// canvas switching logic
+// 	if (tabKey === 'message') {
+// 	  canvas.hide();
+// 	  drawInsideCanvas(); // update insideCanvas content
+// 	  insideCanvasCanvas.show();
+// 	} else {
+// 	  canvas.show();
+// 	  insideCanvasCanvas.hide();
+// 	}
+  
+// 	activeTab = tabKey;
+//   }
   
   function createThemeTextControls(parent) {
 
