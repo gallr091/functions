@@ -237,12 +237,7 @@ function preload() {
 	  createColorControls(tabs['colors']);
 	  createPositionControls(tabs['positions']);
 	  createMessageControls(tabs['message']);
-	  createFinalControls(tabs['final'], {
-		refresh: true,
-		save: true,
-		recipient: true,
-		copyLink: true
-	});
+	  createFinalControls(tabs['final']);
 	}
 
 	// display active tab on page load
@@ -600,11 +595,13 @@ function preload() {
 // 	insideCanvas.textSize(24);
 // 	insideCanvas.text(`From: ${messageFrom}`, insideCanvas.width / 2, 360);
 //   }
-function createFinalControls(parent, options = { refresh: true, save: true, recipient: true, copyLink: true }) {
-	const isMobile = windowWidth < 600;
+  
+function createFinalControls(parent, options = { refresh: true, save: true, recipient: true }) {
+	const isMobile = window.innerWidth < 600;
 
+	// Refresh button (Card Design tab only for desktop, all tabs on mobile)
 	if (options.refresh) {
-		let refreshBtn = createButton('Refresh');
+		const refreshBtn = createButton('Refresh');
 		refreshBtn.addClass('button');
 		refreshBtn.parent(parent);
 		refreshBtn.mousePressed(() => {
@@ -612,40 +609,35 @@ function createFinalControls(parent, options = { refresh: true, save: true, reci
 		});
 	}
 
+	// Save button
 	if (options.save) {
-		let saveBtn = createButton('Save as PNG');
+		const saveBtn = createButton('Save as PNG');
 		saveBtn.addClass('button');
 		saveBtn.parent(parent);
 		saveBtn.mousePressed(() => saveCanvas('greeting-card', 'png'));
 	}
 
+	// Recipient button — varies per device
 	if (options.recipient) {
-		let viewBtn = createButton('Open Recipient View');
-		viewBtn.addClass('button');
-		viewBtn.parent(parent);
-		viewBtn.mousePressed(() => openRecipientViewLink());
-	}
+		const recipientButton = createButton('Open Recipient View');
+		recipientButton.addClass('button');
+		recipientButton.parent(parent);
 
-	if (options.copyLink && isMobile) {
-		let copyBtn = createButton('Copy Recipient Link');
-		copyBtn.addClass('button');
-		copyBtn.parent(parent);
-		copyBtn.mousePressed(() => {
-			drawInsideCanvas();
-			const cardData = {
-				coverImage: canvas.elt.toDataURL("image/png"),
-				insideImage: insideCanvas.canvas.toDataURL("image/png"),
-				bgColor
-			};
-			saveCardToFirestore(cardData, (shareURL) => {
-				navigator.clipboard.writeText(shareURL).then(() => {
-					showCopiedToast();
+		if (isMobile) {
+			// Mobile: open + auto copy link
+			recipientButton.mousePressed(() => {
+				openRecipientViewLink((shareURL) => {
+					navigator.clipboard.writeText(shareURL).then(() => {
+						showCopiedToast(); // Your custom toast message function
+					});
 				});
 			});
-		});
+		} else {
+			// Desktop: open export modal (already sets up copy UI)
+			recipientButton.mousePressed(openRecipientViewLink);
+		}
 	}
 }
-
 
   
 function applyTheme(name) {
@@ -1138,23 +1130,19 @@ function drawShape(index) {
   function getCanvasImage() {
 	return canvas.toDataURL('image/png');
   }
-
-
-  function openRecipientViewLink() {
+  function openRecipientViewLink(callback) {
 	drawInsideCanvas();
 
 	const coverImage = canvas.elt.toDataURL("image/png");
 	const insideImage = insideCanvas.canvas.toDataURL("image/png");
-
 	const cardData = { coverImage, insideImage, bgColor };
 
-	console.log("current bgColor:", bgColor);
-	console.log("saving card data to firestore:", cardData);
-
-
 	saveCardToFirestore(cardData, (shareURL) => {
-		console.log("card saved! yippee! opening:", shareURL);
-		window.open(shareURL, "_blank");
+		if (typeof callback === 'function') {
+			callback(shareURL); // for mobile: just copy link
+		} else {
+			window.open(shareURL, "_blank"); // for desktop: open modal view
+		}
 	});
 }
 
