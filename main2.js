@@ -202,10 +202,6 @@ function preload() {
 	let wrapper = select('#final-controls-wrapper');
 	createFinalControls(wrapper, { refresh: false, save: true, recipient: true });
 
-	// document.querySelector('.close-button').onclick = function () {
-	// 	document.getElementById('final-modal').style.display = 'none';
-	// };
-	
 } else {
 	  createThemeTextControls(tabs['themetext']);
 	  createColorControls(tabs['colors']);
@@ -228,6 +224,9 @@ function preload() {
 	for (let key in tabs) {
 	  if (key === tabKey) {
 		tabs[key].show();
+		tabs[key].style('display', 'flex');
+		tabs[key].style('flex-direction', 'column');
+		// tabs[key].style('gap', '2rem');
 		tabButtons[key].addClass('active');
 	  } else {
 		tabs[key].hide();
