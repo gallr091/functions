@@ -9,6 +9,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="assets/reset.css">
     <link rel="stylesheet" type="text/css" href="assets/style.css">
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase.js"></script>
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyBf_G-TH7jcRRCN5--3yqIqNSsbbJjPoe8",
+        authDomain: "greeting-card-functions.firebaseapp.com",
+        projectId: "greeting-card-functions",
+        storageBucket: "greeting-card-functions.firebasestorage.app",
+        messagingSenderId: "360726857379",
+        appId: "1:360726857379:web:6ebdd96c0f3675e5f16116"
+        };
+
+      firebase.initializeApp(firebaseConfig);
+      var db = firebase.firestore();
+    </script>
+    
+    
     <meta charset="utf-8" />
   </head>
 
@@ -34,7 +50,14 @@
         <div class="modal-content">
           <span class="close-button" id="close-export-btn">&times;</span>
           <!-- <span id="close-final-modal" class="close">&times;</span> -->
-          <div id="final-controls-wrapper"></div>
+          <div id="final-controls-wrapper">
+            <div id="share-link-container">
+              <a id="share-link" href="#" target="_blank" rel="noopener noreferrer"></a>
+              <button id="copy-link-btn" class="button">Copy Link</button>
+              <span id="copied-msg">Link copied!</span>
+            </div>
+            
+          </div>
         </div>
       </div>
 

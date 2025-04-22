@@ -1012,8 +1012,6 @@ function drawShape(index) {
   }
   
   
-
-  
   function cuteText(texter, index) {
 	  if (cx[index] === null || cy[index] === null) {
 		return;
@@ -1041,30 +1039,79 @@ function drawShape(index) {
 	pop();
   }
 
+
+// -----FIREBASE-----
+// I referred to an "Intro to Firebase" guide from an elective last year + asked ChatGPT to help me set up this function. Only used Firebase once before so I'm not super familiar with it
+// I created a Firestore Database on my personal Google account and linked it to this project. Then I authorized my Github domain. When a card is finished, the design is saved to Firestore and a unique link is generated. This link leads to a recipient view where the card can be opened and interacted with. 
+// Previously, the recipient view opened a new page directly from the generator, but the link wasn't shareable because the card data wasn't saved anywhere. So, you were initially be able to see the card in recipient.html, but if you copy+pasted and sent the link to someone, they wouldn't be able to see the design you just made. Firebase allows actual link sharing now :)
+  function saveCardToFirestore(cardData, callback) {
+	const docRef = db.collection("cards").doc(); // auto ID
+	docRef.set(cardData).then(() => {
+		// automatically detects subfolder. I looked this up so I could test with my live server instead of directly plugging in my github url
+		const basePath = window.location.pathname.split('/').slice(0, -1).join('/');
+		const shareURL = `${window.location.origin}${basePath}/recipient.html?id=${docRef.id}`;		
+	  callback(shareURL);
+
+	// show link + copy button
+    const linkContainer = document.getElementById("share-link-container");
+    const linkEl = document.getElementById("share-link");
+    const copyBtn = document.getElementById("copy-link-btn");
+    const copiedMsg = document.getElementById("copied-msg");
+
+    linkEl.textContent = shareURL;
+    linkEl.href = shareURL;
+    linkContainer.style.display = "block";
+    copiedMsg.style.display = "none";
+
+    copyBtn.onclick = () => {
+      navigator.clipboard.writeText(shareURL).then(() => {
+        copiedMsg.style.display = "block";
+        setTimeout(() => copiedMsg.style.display = "none", 2000);
+      });
+    };
+  }).catch(console.error);
+}
+
   function getCanvasImage() {
 	return canvas.toDataURL('image/png');
   }
 
-function openRecipientViewLink() {
-	drawInsideCanvas(); 
-  
+
+  function openRecipientViewLink() {
+	drawInsideCanvas();
+
 	const coverImage = canvas.elt.toDataURL("image/png");
 	const insideImage = insideCanvas.canvas.toDataURL("image/png");
-  
-	const recipientWindow = window.open("recipient.html", "_blank");
-  
-	recipientWindow.onload = () => {
-	  recipientWindow.postMessage({
-		type: "cardDesign",
-		data: {
-		  coverImage,
-		  insideImage
-		}
-	  }, "*");
-	};
-  }
 
+	const cardData = { coverImage, insideImage };
+
+	saveCardToFirestore(cardData, (shareURL) => {
+		console.log("card saved! yippee! opening:", shareURL);
+		window.open(shareURL, "_blank");
+	});
+}
+
+
+// function openRecipientViewLink() {
+// 	drawInsideCanvas(); 
   
+// 	const coverImage = canvas.elt.toDataURL("image/png");
+// 	const insideImage = insideCanvas.canvas.toDataURL("image/png");
+  
+// 	const recipientWindow = window.open("recipient.html", "_blank");
+  
+// 	recipientWindow.onload = () => {
+// 	  recipientWindow.postMessage({
+// 		type: "cardDesign",
+// 		data: {
+// 		  coverImage,
+// 		  insideImage
+// 		}
+// 	  }, "*");
+// 	};
+//   }
+
+
   function drawInsideCanvas() {
 	insideCanvas.background(bgColor);
 	insideCanvas.fill(captionTextColor); 

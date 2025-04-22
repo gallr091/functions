@@ -113,6 +113,17 @@ html, body {
 	z-index: 9999;
 }
 
+#copied-msg {
+	margin-left: 10px;
+	color: green;
+	display: none;
+	font-weight: 500;
+  }
+
+  #share-link {
+	display: none; 
+  }
+
 @media screen and (max-width: 600px) {
 	#open-export-btn {
 	  display: none;
@@ -129,7 +140,7 @@ html, body {
 
 #final-controls-wrapper{
 	display: flex;
-	flex-direction: column;
+	flex-direction: column-reverse;
 	margin-top: 2rem;
 	gap: 1rem;
 	align-items: center;
@@ -507,6 +518,10 @@ button{
 	input[type="range"]::-webkit-slider-thumb {
 		height: 2rem;
 		width: 2rem;    
+	}
+
+	#block1, #block2, #block3, #block4{
+		margin-bottom: 0;
 	}
 	  
 	

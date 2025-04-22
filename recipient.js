@@ -1,20 +1,84 @@
+// --- Card rendering ---
 function setupCard(data) {
 	if (!data || !data.coverImage || !data.insideImage) return;
-  
 	document.getElementById('card-front').style.backgroundImage = `url(${data.coverImage})`;
 	document.getElementById('card-inside').style.backgroundImage = `url(${data.insideImage})`;
-  }
-  
-  function flipCard() {
+}
+
+function flipCard() {
 	document.getElementById('card').classList.toggle('flipped');
-  }
-  
-  window.addEventListener("message", (event) => {
+}
+
+// --- Handle postMessage (live preview from generator) ---
+window.addEventListener("message", (event) => {
 	if (event.data?.type === "cardDesign") {
-	  setupCard(event.data.data);
+		setupCard(event.data.data);
 	}
-  });
+});
+
+// --- If URL contains a Firestore ID, load from Firebase ---
+function getQueryParam(param) {
+	const urlParams = new URLSearchParams(window.location.search);
+	return urlParams.get(param);
+}
+
+const cardId = getQueryParam('id');
+
+if (cardId) {
+	// Firebase config
+	const firebaseConfig = {
+		apiKey: "AIzaSyBf_G-TH7jcRRCN5--3yqIqNSsbbJjPoe8",
+		authDomain: "greeting-card-functions.firebaseapp.com",
+		projectId: "greeting-card-functions",
+		storageBucket: "greeting-card-functions.firebasestorage.app",
+		messagingSenderId: "360726857379",
+		appId: "1:360726857379:web:6ebdd96c0f3675e5f16116"
+		};
   
+	firebase.initializeApp(firebaseConfig);
+	const db = firebase.firestore();
+
+	db.collection("cards").doc(cardId).get().then(doc => {
+		if (doc.exists) {
+			setupCard(doc.data());
+		} else {
+			document.body.innerHTML = "<h2>Card not found 😢</h2>";
+		}
+	}).catch(error => {
+		console.error("Error loading card:", error);
+		document.body.innerHTML = "<h2>Error loading card.</h2>";
+	});
+}
+
+
+
+
+
+
+// MAIN FUNCTION PRE 04/22
+// function setupCard(data) {
+// 	if (!data || !data.coverImage || !data.insideImage) return;
+  
+// 	document.getElementById('card-front').style.backgroundImage = `url(${data.coverImage})`;
+// 	document.getElementById('card-inside').style.backgroundImage = `url(${data.insideImage})`;
+//   }
+  
+//   function flipCard() {
+// 	document.getElementById('card').classList.toggle('flipped');
+//   }
+  
+//   window.addEventListener("message", (event) => {
+// 	if (event.data?.type === "cardDesign") {
+// 	  setupCard(event.data.data);
+// 	}
+//   });
+  
+
+
+
+
+
+// meh
   // function setupCard(image) {
 // 	if (!image) return;
   
