@@ -91,8 +91,29 @@ html, body {
 	font-size: 14px;
 	border-radius: 10px;
 	cursor: pointer;
-	width: 120px;
+	width: auto;
   }  
+
+  #open-export-btn {
+	bottom: 20px;
+	top: auto; /* override modal-trigger */
+	right: 20px;
+	position: fixed;
+	width: auto;
+	background-color: var(--color-text);
+	color: var(--color-offwhite);
+	font-size: 14px;
+	border-radius: 10px;
+	padding: 10px 20px;
+	cursor: pointer;
+	z-index: 9999;
+}
+
+@media screen and (max-width: 600px) {
+	#open-export-btn {
+	  display: none;
+	}
+  }
 
 
 
@@ -255,8 +276,8 @@ html, body {
 	inline-size: 60px;
 	block-size: 60px;
 	padding: 4px;
-	background: lightgrey;
-  border-width: 1px;
+	background: white;
+  border-width: 1.5px;
   border-style: solid;
   border-color: rgb(153, 153, 153);
   }
@@ -289,12 +310,12 @@ html, body {
 input[type="range" i] {
     /* appearance: auto; */
 	appearance: none;
-	background: white;
-	height: 0.5rem;
+	background: var(--color-offwhite);
+	height: 1rem;
 	border-radius: 50px;
   
     cursor: default;
-    color: light-dark(rgb(16, 16, 16), rgb(255, 255, 255));
+    /* color: light-dark(rgb(16, 16, 16), rgb(255, 255, 255)); */
     padding: initial;
     border: initial;
     margin: 2px;
@@ -304,10 +325,10 @@ input[type="range"]::-webkit-slider-thumb {
 	-webkit-appearance: none; 
 	appearance: none;
 	background-color: var(--color-text);
-	border: solid 2px var(--color-offwhite);
+	border: solid 4px var(--color-offwhite);
 	border-radius: 100px;
-	height: 2rem;
-	width: 2rem;    
+	height: 3rem;
+	width: 3rem;    
  }
 
  #sliderz{
@@ -432,6 +453,12 @@ button{
 	  /* #insidecanvas{
 		margin-top: -10rem;
 	  } */
+
+
+	input[type="range"]::-webkit-slider-thumb {
+		height: 2rem;
+		width: 2rem;    
+	}
 	  
 	
 }
