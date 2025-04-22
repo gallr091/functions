@@ -21,9 +21,9 @@ let rectColorPicker;
 
 let insideCanvas;
 let toInput, fromInput, messageInput;
-let messageTo = '';
-let messageFrom = '';
-let messageBody = '';
+let messageTo = 'You';
+let messageFrom = 'Me';
+let messageBody = 'This is the inside of your greeting card! Your message will display when the card is “flipped” open. Check it out in the recipient view :)';
 
 let letterRotations = [];
 
@@ -384,7 +384,7 @@ function preload() {
 	block1.parent(inputRow);
 
 	let block2 = createDiv();
-	block2.id('block3');
+	block2.id('block2');
 	block2.parent(inputRow);
 
 	let block3 = createDiv();
@@ -412,11 +412,11 @@ function preload() {
 		let mainColorLabel = createP('Main Text Color');
 		mainColorLabel.addClass('label');
 
-		mainColorLabel.parent(block2);
+		mainColorLabel.parent(block3);
 		mainColorPicker = createColorPicker(mainTextColor);
 		mainColorPicker.addClass('colorpicker');
 
-		mainColorPicker.parent(block2);
+		mainColorPicker.parent(block3);
 		mainColorPicker.input(() => {
 		mainTextColor = mainColorPicker.value();
 	});
@@ -424,9 +424,9 @@ function preload() {
 	// caption color
 	let captionColorLabel = createP('Caption Text Color');
 	captionColorLabel.addClass('label');
-	captionColorLabel.parent(block3);
+	captionColorLabel.parent(block4);
 	captionColorPicker = createColorPicker(captionTextColor);
-	captionColorPicker.parent(block3);
+	captionColorPicker.parent(block4);
 	captionColorPicker.addClass('colorpicker');
 
 	captionColorPicker.input(() => {
@@ -436,9 +436,9 @@ function preload() {
 	// bg color
 	let bgColorLabel = createP('Background Color');
 	bgColorLabel.addClass('label');
-	bgColorLabel.parent(block4);
+	bgColorLabel.parent(block2);
 	bgColorPicker = createColorPicker(bgColor);
-	bgColorPicker.parent(block4);
+	bgColorPicker.parent(block2);
 	bgColorPicker.addClass('colorpicker');
 
 	bgColorPicker.input(() => {

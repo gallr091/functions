@@ -68,6 +68,10 @@ html, body {
 	position: relative;
 	text-align: center;
   }
+
+  .modal-content p {
+	margin: 2rem;
+  }
   
   .close-button {
 	color: #aaa;
@@ -255,8 +259,11 @@ html, body {
   .block-row{
 	display: grid;
 	grid-template-columns: 2fr 2fr;
+	gap: 1rem;
+	padding-left: 2rem;
+	padding-right: 2rem;
 	/* gap: auto; */
-	justify-content: space-between;
+	/* justify-content: space-evenly; */
   }
 
   #block1, #block2, #block3, #block4{
@@ -266,9 +273,9 @@ html, body {
 	/* margin-bottom: 1rem; */
   }
 
-  #block1, #block2{
+  /* #block1, #block2{
 	margin-bottom: 1rem;
-  }
+  } */
 
   select{
 	background-color: white;
@@ -456,6 +463,8 @@ button{
 	  .block-row{
 		display: flex;
 		justify-content: space-evenly;
+		padding: 0;
+		gap: 0;
 		/* margin-bottom: 3rem; */
 	  }
 
