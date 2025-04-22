@@ -1083,7 +1083,11 @@ function drawShape(index) {
 	const coverImage = canvas.elt.toDataURL("image/png");
 	const insideImage = insideCanvas.canvas.toDataURL("image/png");
 
-	const cardData = { coverImage, insideImage };
+	const cardData = { coverImage, insideImage, bgColor };
+
+	console.log("current bgColor:", bgColor);
+	console.log("saving card data to firestore:", cardData);
+
 
 	saveCardToFirestore(cardData, (shareURL) => {
 		console.log("card saved! yippee! opening:", shareURL);

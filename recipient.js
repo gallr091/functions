@@ -1,13 +1,41 @@
 // --- Card rendering ---
 function setupCard(data) {
 	if (!data || !data.coverImage || !data.insideImage) return;
-	document.getElementById('card-front').style.backgroundImage = `url(${data.coverImage})`;
-	document.getElementById('card-inside').style.backgroundImage = `url(${data.insideImage})`;
+
+	const cardFront = document.getElementById('card-front');
+	const cardInside = document.getElementById('card-inside');
+
+	// front + inside bg images
+	cardFront.style.backgroundImage = `url(${data.coverImage})`;
+	cardInside.style.backgroundImage = `url(${data.insideImage})`;
+
+	// for toggling
+	cardFront.dataset.coverImage = data.coverImage;
+
+	// thank god its working now
+	cardFront.dataset.bgColor = data.bgColor;
+	// cardFront.style.background = `url(${data.bgColor})`;
+
 }
 
+
 function flipCard() {
-	document.getElementById('card').classList.toggle('flipped');
+	const card = document.getElementById('card');
+	const cardFront = document.getElementById('card-front');
+
+	card.classList.toggle('flipped');
+
+	// If flipped, remove image and set color
+	if (card.classList.contains('flipped')) {
+		cardFront.style.backgroundImage = 'none';
+		cardFront.style.backgroundColor = cardFront.dataset.bgColor;
+	} else {
+		// If unflipped, restore the image
+		cardFront.style.backgroundImage = `url(${cardFront.dataset.coverImage})`;
+		cardFront.style.backgroundColor = 'transparent';
+	}
 }
+
 
 // --- Handle postMessage (live preview from generator) ---
 window.addEventListener("message", (event) => {
