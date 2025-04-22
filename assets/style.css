@@ -251,6 +251,32 @@ html, body {
   .tab-button.active img {
 	filter: brightness(0) invert(1); 
 }
+/* 
+.tab-button {
+  position: relative;
+}
+
+.tab-button::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #222;
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+  z-index: 999;
+}
+
+.tab-button:hover::after {
+  opacity: 1;
+} */
 
   
   .tab-content {

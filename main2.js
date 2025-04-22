@@ -170,6 +170,14 @@ function preload() {
 	let tabButtonsDiv = createDiv().addClass('tab-buttons').parent(controlsDiv);
   
 	const isDesktop = windowWidth >= 600;
+
+	const labels = {
+		themetext: 'Theme & Text',
+		colors: 'Colors',
+		positions: 'Positions',
+		message: 'Message',
+		final: 'Final'
+	  };
   
 	const tabNames = isDesktop
 	  ? ['Card Design', 'Message']
@@ -178,7 +186,9 @@ function preload() {
 	  tabNames.forEach(name => {
 		const key = name.toLowerCase().replace(/ & /g, '').replace(/\s+/g, '');
 		const btn = createButton('').addClass('tab-button').attribute('data-tab', key).parent(tabButtonsDiv);
-	  
+	   	//not working 
+		// btn.attribute('data-tooltip', labels[key]); 
+
 		if (!isDesktop) {
 		  //mobile svg icons
 		  const iconMap = {
@@ -522,7 +532,7 @@ function preload() {
 	messageBlock.parent(parent);
 	messageBlock.addClass('message-block');
 
-	let toLabel = createP("To:");
+	let toLabel = createP("To");
 	toLabel.parent(inputRow);
 	toLabel.addClass('label');
 
@@ -536,7 +546,7 @@ function preload() {
 		updateInsideCanvas();
 	  });
 
-	  let fromLabel = createP("From:");
+	  let fromLabel = createP("From");
 	  fromLabel.parent(inputRow);
 	  fromLabel.addClass('label');
 
@@ -552,7 +562,7 @@ function preload() {
 	  });
 
 
-	let messageLabel = createP("Message:");
+	let messageLabel = createP("Message");
 	messageLabel.parent(messageBlock);
 	messageLabel.addClass('label');
 
@@ -639,11 +649,18 @@ function draw() {
 		background(bgColor); 
 	  }
 
-	 if (currentTheme === 'romantic') {
+	  if (currentTheme === 'romantic') {
 		push();
-		drawBorder();
+		// drawBorder();
+	  
+		if (balloons.length === 0) {
+		  generateBalloons(); 
+		}
+	
+		drawScene(); 
 		pop();
-	  } 
+	  }
+	  
 
 	  if (currentTheme === 'spring') {
 
