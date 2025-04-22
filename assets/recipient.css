@@ -83,6 +83,47 @@ body {
 	display: block;
   }
 
+  #confetti-container {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+	overflow: hidden;
+	z-index: 9999;
+}
+
+.confetti {
+	position: absolute;
+	top: 0;
+	width: 10px;
+	height: 10px;
+	border-radius: 50%; 
+	animation: fall 1.5s ease-out forwards;
+	pointer-events: none;
+}
+
+.confetti.square {
+	border-radius: 0; 
+	width: 8px;
+	height: 8px;
+}
+
+@keyframes fall {
+	0% {
+		opacity: 1;
+		transform: translateY(0) rotate(0deg);
+	}
+	100% {
+		opacity: 0;
+		transform: translateY(300px) rotate(360deg);
+	}
+}
+
+
+
+
 /*   
   .card {
 	width: 707px;

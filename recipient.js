@@ -24,6 +24,7 @@ function flipCard() {
 	const cardFront = document.getElementById('card-front');
 
 	card.classList.toggle('flipped');
+	spawnConfetti();
 
 	// If flipped, remove image and set color
 	if (card.classList.contains('flipped')) {
@@ -76,6 +77,26 @@ if (cardId) {
 		console.error("Error loading card:", error);
 		document.body.innerHTML = "<h2>Error loading card.</h2>";
 	});
+}
+
+function spawnConfetti() {
+	const container = document.getElementById('confetti-container');
+	for (let i = 0; i < 20; i++) {
+		const confetti = document.createElement('div');
+		confetti.classList.add('confetti');
+
+		// square
+		if (Math.random() < 0.5) {
+			confetti.classList.add('square');
+		}
+
+		confetti.style.left = `${Math.random() * 100}%`;
+		confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 70%)`;
+		confetti.style.animationDuration = `${0.8 + Math.random()}s`;
+		container.appendChild(confetti);
+
+		setTimeout(() => confetti.remove(), 1500);
+	}
 }
 
 
