@@ -196,28 +196,62 @@ html, body {
 	height: 45vh;
 }
 
-
+.tab-icon {
+	width: 50px;
+	height: 50px;
+	display: block;
+	margin: 0 auto;
+  }
+  
 
 .tab-buttons {
 	display: flex;
 	gap: 0.5rem;
-	font-size: 0.8rem;
+	font-size: 1.5rem;
 	/* margin-bottom: 10px; */
   }
   
   .tab-button {
 	background: var(--color-offwhite);
 	color: var(--color-text);
-	padding: 10px;
+	padding: 5px;
+	height: 50px;
+	width: auto;
 	/* border: 2px solid #3E3832; */
 	border-radius: 10px;
 	cursor: pointer;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+	transition: all 0.2s ease;
+  }
+
+  .tab-button:last-child{
+	width: 100px;
+	padding: 0.5rem;
+	background: var(--color-text);
+	color: var(--color-offwhite);
+	/* background: rgb(25, 125,190);
+	color: var(--color-offwhite); */
+  }
+  
+  .tab-button:hover {
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+	transform: translateY(-2px);
+  }
+  
+  .tab-button:active {
+	transform: translateY(0);
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
   
   .tab-button.active {
-	background: var(--color-text);
+	background: #8a837c;	
 	color: var(--color-offwhite);
   }
+
+  .tab-button.active img {
+	filter: brightness(0) invert(1); 
+}
+
   
   .tab-content {
 	display: none;
@@ -421,7 +455,9 @@ button{
 	/* border: 2px solid white; */
 	border-radius: 10px;
 	cursor: pointer;
-	width: 200px;
+	/* width: 200px; */
+	width: auto;
+	/* width: 100px; */
 	/* margin-bottom: 1rem; */
 	text-align: center;
 }
@@ -451,6 +487,26 @@ button{
 		gap: 1rem;
 	}
 
+
+	.tab-buttons{
+		font-size: 1rem;
+		width: 100%;
+	}
+
+	.tab-button:last-child{
+		width: auto;
+		/* padding:2rem; */
+		background: var(--color-offwhite);
+		color: var(--color-text);
+		/* background: rgb(25, 125,190);
+		color: var(--color-offwhite); */
+	  }
+
+	  .tab-button.active {
+		background: #8a837c;	
+		color: var(--color-offwhite);
+	  }
+	  
 	/* .tab-content{
 		margin-top: 1rem;
 	} */

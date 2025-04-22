@@ -175,18 +175,38 @@ function preload() {
 	  ? ['Card Design', 'Message']
 	  : ['Theme & Text', 'Colors', 'Positions', 'Message', 'Final'];
   
-	tabNames.forEach(name => {
-	  const key = name.toLowerCase().replace(/ & /g, '').replace(/\s+/g, '');
-	  const btn = createButton(name)
-		.addClass('tab-button')
-		.attribute('data-tab', key)
-		.parent(tabButtonsDiv);
-	  btn.mousePressed(() => switchTab(key));
-	  tabButtons[key] = btn;
-  
-	  const tabContent = createDiv().addClass('tab-content').parent(controlsDiv);
-	  tabs[key] = tabContent;
-	});
+	  tabNames.forEach(name => {
+		const key = name.toLowerCase().replace(/ & /g, '').replace(/\s+/g, '');
+		const btn = createButton('').addClass('tab-button').attribute('data-tab', key).parent(tabButtonsDiv);
+	  
+		if (!isDesktop) {
+		  //mobile svg icons
+		  const iconMap = {
+			themetext: 'icon-01.svg',
+			colors: 'icon-02.svg',
+			positions: 'icon-03.svg',
+			message: 'icon-04.svg'
+		  };
+	  
+		  if (iconMap[key]) {
+			const img = createImg(`assets/${iconMap[key]}`, name);
+			img.parent(btn);
+			img.addClass('tab-icon');
+		  } else {
+			btn.html(name); // except final
+		  }
+		} else {
+		  // desktop
+		  btn.html(name);
+		}
+	  
+		btn.mousePressed(() => switchTab(key));
+		tabButtons[key] = btn;
+	  
+		const tabContent = createDiv().addClass('tab-content').parent(controlsDiv);
+		tabs[key] = tabContent;
+	  });
+	  
   
 	// desktop layout 
 	if (isDesktop) {

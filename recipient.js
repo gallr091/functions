@@ -1,4 +1,4 @@
-// --- Card rendering ---
+// render the card
 function setupCard(data) {
 	if (!data || !data.coverImage || !data.insideImage) return;
 
@@ -18,7 +18,6 @@ function setupCard(data) {
 
 }
 
-
 function flipCard() {
 	const card = document.getElementById('card');
 	const cardFront = document.getElementById('card-front');
@@ -26,26 +25,24 @@ function flipCard() {
 	card.classList.toggle('flipped');
 	spawnConfetti();
 
-	// If flipped, remove image and set color
 	if (card.classList.contains('flipped')) {
 		cardFront.style.backgroundImage = 'none';
 		cardFront.style.backgroundColor = cardFront.dataset.bgColor;
 	} else {
-		// If unflipped, restore the image
 		cardFront.style.backgroundImage = `url(${cardFront.dataset.coverImage})`;
 		cardFront.style.backgroundColor = 'transparent';
 	}
 }
 
 
-// --- Handle postMessage (live preview from generator) ---
+// postMessage (live preview from generator) 
 window.addEventListener("message", (event) => {
 	if (event.data?.type === "cardDesign") {
 		setupCard(event.data.data);
 	}
 });
 
-// --- If URL contains a Firestore ID, load from Firebase ---
+// if URL contains a firestore ID, load from firebase 
 function getQueryParam(param) {
 	const urlParams = new URLSearchParams(window.location.search);
 	return urlParams.get(param);
@@ -86,10 +83,11 @@ function spawnConfetti() {
 		confetti.classList.add('confetti');
 
 		// square
-		if (Math.random() < 0.5) {
+		if (Math.random() < 0.6) {
 			confetti.classList.add('square');
 		}
 
+		confetti.style.marginTop = '10rem';
 		confetti.style.left = `${Math.random() * 100}%`;
 		confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 70%)`;
 		confetti.style.animationDuration = `${0.8 + Math.random()}s`;

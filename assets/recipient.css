@@ -97,8 +97,8 @@ body {
 .confetti {
 	position: absolute;
 	top: 0;
-	width: 10px;
-	height: 10px;
+	width: 2vw;
+	height: 2vw;
 	border-radius: 50%; 
 	animation: fall 1.5s ease-out forwards;
 	pointer-events: none;
@@ -106,8 +106,8 @@ body {
 
 .confetti.square {
 	border-radius: 0; 
-	width: 8px;
-	height: 8px;
+	width: 1vw;
+	height: 1vw;
 }
 
 @keyframes fall {
