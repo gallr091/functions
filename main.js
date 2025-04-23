@@ -1,99 +1,92 @@
-let canvas; 
+/* ------------------------ GLOBAL VARIABLES ------------------------ */
 
-let tabs = {};
-let tabButtons = {};
-let activeTab = 'themeText'; 
-
-let tagline = ["H", "e", "l", "l", "o"];
-
-let romanticFont, springFont, gamerFont, holidayFont, defaultFont;
-
-let button, inp, controlsDiv, containerDiv, canvasWrapper;
-let font1, font2, font3, font4;
-let widther, heighter, waver, glitch, maxIndex, maxim;
-let cx = [], cy = [], cratio = [];
-let captionInput;
-let captionText = "Have a good day!";
-let fontChoices = [];
-let shearAngles = [];
-let rectSettings = [];
-let rectColorPicker;
-
+// State + UI Logic
+let canvas;
 let insideCanvas;
+
+let activeTab = 'themeText';
+let currentLayout = 'arc';
+let currentTheme = 'default'; // celebration theme = default
+let forceRedraw = true;
+let shouldRedrawPixels = true;
+
+// DOM + Element Refs
+let containerDiv, controlsDiv, canvasWrapper;
+let button, inp, layoutSelector;
+let mainColorPicker, captionColorPicker, bgColorPicker;
+let rectColorPicker;
+let captionInput;
+
 let toInput, fromInput, messageInput;
+let xMainSlider, yMainSlider, xCaptionSlider, yCaptionSlider;
+
+// Text + Message Data
+let tagline = ["H", "e", "l", "l", "o"];
+let captionText = "Have a good day!";
 let messageTo = 'You';
 let messageFrom = 'Me';
 let messageBody = 'This is the inside of your greeting card! Your message will display when the card is “flipped” open. Check it out in the recipient view :)';
 
-let letterRotations = [];
-
-let shouldRedrawPixels = true;
-
-let layoutSelector;
-let currentLayout = 'arc';
-
+// Theme + Fonts
 let themeFonts = {};
-
-let rectColor = '#FF66AA';
-let mainTextColor = '#edf7ff';
-let captionTextColor = '#197dbe';
-let bgColor = '#FFFCF5';
-let mainColorPicker, captionColorPicker, bgColorPicker;
-
-let currentTheme = 'default'; // celebration theme = default
+let captionFonts = {};
 
 const themes = {
 
-	default: {
-		layout: 'arc',
-		font: 'default',
-		shape: 'diamond',
-		bgColor: '#FFFCF5',
-		mainTextColor: '#edf7ff',
-		captionTextColor: '#197dbe',
-		rectColor: '#FF66AA'
-	  },
-	
+  default: {
+    layout: 'arc',
+    font: 'default',
+    shape: 'diamond',
+    bgColor: '#FFFCF5',
+    mainTextColor: '#edf7ff',
+    captionTextColor: '#197dbe',
+    rectColor: '#FF66AA'
+  },
+
   punk: {
     layout: 'wave',
     font: 'random', 
-	captionFont: 'punk',
+    captionFont: 'punk',
     shape: 'rect',
     bgColor: '#000000',
     mainTextColor: '#000000',
     captionTextColor: '#ffffff',
     rectColor: '#ffffff'
   },
+
   romantic: {
-	layout: 'waveStack',
+    layout: 'waveStack',
     font: 'romantic',
-	captionFont: 'romantic',
+    captionFont: 'romantic',
     shape: 'heart',
     bgColor: '#fff0f5',
     mainTextColor: '#c71585',
     captionTextColor: '#c71585',
     rectColor: '#ffb6c1'
   },
+
   spring: {
     layout: 'grid',
     font: 'spring',
-	captionFont: 'spring',
+    captionFont: 'spring',
     shape: 'circle',
     bgColor: '#f0fff0',
     mainTextColor: '#567c57',
     captionTextColor: '#a17373',
     rectColor: '#ffe4e1'
   },
+
   gamer: {
-	layout: 'maxFill',
+    layout: 'maxFill',
     font: 'gamer',
-	captionFont: 'pixel',
+    captionFont: 'pixel',
     shape: 'pixel',
     bgColor: '#000000',
     mainTextColor: '#EDEDED',
     captionTextColor: '#00ffff',
     rectColor: '#ff00ff'
   },
+
   holiday: {
     layout: 'wave',
     font: 'holiday',
@@ -102,18 +95,40 @@ const themes = {
     mainTextColor: '#800000',
     captionTextColor: '#004225',
     rectColor: '#d2691e'
-  },
- 
+  }
+
 };
 
+let romanticFont, springFont, gamerFont, holidayFont, defaultFont;
+let font1, font2, font3, font4;
 
+// Colors
+let rectColor = '#FF66AA';
+let mainTextColor = '#edf7ff';
+let captionTextColor = '#197dbe';
+let bgColor = '#FFFCF5';
+
+// Layout
 let mainX = 150, mainY = 240;
 let captionX = 400, captionY = 300;
-let xMainSlider, yMainSlider, xCaptionSlider, yCaptionSlider;
-let forceRedraw = true;
+let widther, heighter, waver, glitch, maxIndex, maxim;
+
+// Arrays 
+let cx = [], cy = [], cratio = [];
+let letterRotations = [];
+let shearAngles = [];
+let fontChoices = [];
+let rectSettings = [];
+
+// Tabs
+let tabs = {};
+let tabButtons = {};
+
+
+
+/* ------------------------ PRELOAD + SETUP ------------------------ */
 
 function preload() {
-	// mainFont = loadFont("Outfit-Variable.ttf");
 
 	font1 = loadFont("fonts/UnifrakturCook-Bold.ttf");
 	font2 = loadFont("fonts/BrutalMilkNo3-Bold.ttf");
@@ -171,14 +186,15 @@ function preload() {
   
 	const isDesktop = windowWidth >= 600;
 
-	const labels = {
-		themetext: 'Theme & Text',
-		colors: 'Colors',
-		positions: 'Positions',
-		message: 'Message',
-		final: 'Final'
-	  };
+	// const labels = {
+	// 	themetext: 'Theme & Text',
+	// 	colors: 'Colors',
+	// 	positions: 'Positions',
+	// 	message: 'Message',
+	// 	final: 'Final'
+	//   };
   
+	// using conditional operators lol
 	const tabNames = isDesktop
 	  ? ['Card Design', 'Message']
 	  : ['Theme & Text', 'Colors', 'Positions', 'Message', 'Done?'];
@@ -260,7 +276,12 @@ function preload() {
 	switchTab(activeTab);
   }
 
-  function switchTab(tabKey) {
+
+
+/* ------------------------ CONTROL PANELS ------------------------ */
+
+// Switching Tabs
+ function switchTab(tabKey) {
 	for (let key in tabs) {
 	  if (key === tabKey) {
 		tabs[key].show();
@@ -285,39 +306,9 @@ function preload() {
   
 	activeTab = tabKey;
   }
-  
-//   function switchTab(tabKey) {
 
-// 	//media query
-// 	if (windowWidth >= 800) {
-// 		// On desktop, ignore tab switching logic
-// 		return;
-// 	  }
 
-	  
-// 	for (let key in tabs) {
-// 	  if (key === tabKey) {
-// 		tabs[key].show();
-// 		tabButtons[key].addClass('active');
-// 	  } else {
-// 		tabs[key].hide();
-// 		tabButtons[key].removeClass('active');
-// 	  }
-// 	}
-  
-// 	// canvas switching logic
-// 	if (tabKey === 'message') {
-// 	  canvas.hide();
-// 	  drawInsideCanvas(); // update insideCanvas content
-// 	  insideCanvasCanvas.show();
-// 	} else {
-// 	  canvas.show();
-// 	  insideCanvasCanvas.hide();
-// 	}
-  
-// 	activeTab = tabKey;
-//   }
-  
+// Theme & Text Controls
   function createThemeTextControls(parent) {
 
 	createElement('h3', 'Theme & Text').parent(parent).addClass('tab-label');
@@ -414,7 +405,10 @@ function preload() {
 	});
   
   }
-  
+
+
+
+// Color Controls
   function createColorControls(parent) {
 
 	createElement('h3', 'Colors').parent(parent).addClass('tab-label');
@@ -489,7 +483,9 @@ function preload() {
 		bgColor = bgColorPicker.value();
 	});
   }
-  
+
+
+// Position Controls
   function createPositionControls(parent) {
 
 	createElement('h3', 'Positions').parent(parent).addClass('tab-label');
@@ -538,6 +534,7 @@ function preload() {
   }
   
 
+// Message Controls
   function createMessageControls(parent) {
 
 	createElement('h3', 'Message').parent(parent).addClass('tab-label');
@@ -600,6 +597,7 @@ function preload() {
   }
 
 
+// Final Controls
 function createFinalControls(parent) {
 	const isMobile = windowWidth < 600;
 
@@ -706,14 +704,7 @@ function draw() {
 		console.log('drawing stems and flowers?');
 		drawStemsAndFlowers();
 		pop();
-	  } 
-
-	//   if (currentTheme === 'gamer') {
-	// 	push();
-	// 	drawPixels();
-	// 	pop();
-		// noLoop();
-	//   }
+	  }
 
 	if (currentTheme === 'gamer') {
 		drawGamerTheme();
@@ -722,9 +713,6 @@ function draw() {
 	  if (currentTheme === 'default') {
 		drawConfettiBackground();
 	  }
-
-
-	// background(bgColor);
 
 	if (forceRedraw) {
 		cx = [];
@@ -740,12 +728,11 @@ function draw() {
 	  
 		// generate layout positions
 		for (let i = 0; i < tagline.length; i++) {
-		  if (currentLayout === 'wave') generateXYCWave(i);
-		  if (currentLayout === 'grid') generateXYCGrid(i);
-		  if (currentLayout === 'spiral') generateXYCSpiral(i);
-		  if (currentLayout === 'arc') generateXYCArc(i);
-		  if (currentLayout === 'waveStack') generateXYCWaveStack(i);
-		  if (currentLayout === 'maxFill') generateXYCMaxFill(i);
+		  if (currentLayout === 'wave') generateWave(i);
+		  if (currentLayout === 'grid') generateGrid(i);
+		  if (currentLayout === 'arc') generateArc(i);
+		  if (currentLayout === 'waveStack') generateWaveStack(i);
+		  if (currentLayout === 'maxFill') generateMaxFill(i);
 	  
 		  shearAngles.push(random(-PI / 20, PI / 20));
 	  
@@ -789,7 +776,7 @@ function draw() {
 		for (let i = 0; i < tagline.length; i++) drawShape(i);
 	  }
 	  
-	for (let i = 0; i < tagline.length; i++) cuteText(tagline[i], i);
+	for (let i = 0; i < tagline.length; i++) mainText(tagline[i], i);
 	pop();
 
 	// caption text
@@ -810,54 +797,12 @@ function draw() {
 		pop();
 
 }
-  
-
-// DEFAULT 
-// experiment
-function generateXYC(index) {
-	//stretchiness original
-	// let ratio = random(1, 1.5);
-
-		//uniform stretch
-		// let ratio = 1;
-
-		//more distorted
-		let ratio = random(0.5, 2);
-
-	if (tagline[index] === "/") {
-		maxIndex = index;
-		widther -= random(50, 100);
-		heighter += 80;
-	}
-	cx.push(widther);
-
-	//wave original
-	//cy.push(heighter + sin(index / 2 + waver) * 30);
-		
-		//bigger wave
-		// cy.push(heighter + sin(index * 0.3 + waver) * 50);
-
-		//zigzag
-		// cy.push(heighter + (index % 2 === 0 ? -20 : 20));
-
-		//random jitter
-		cy.push(heighter + random(-30, 30));
 
 
-	cratio.push(ratio);
-
-	//horizontal spacing original
-	widther += textWidth(tagline[index]) * ratio;
-
-		//closer together
-		// widther += textWidth(tagline[index]) * ratio * 0.8;
-
-		//uniform spacing
-		// widther += 40 * ratio;
-}
+/* ------------------------ MAIN TEXT LAYOUT STYLES ------------------------ */
 
 // WAVE
-function generateXYCWave(index) {
+function generateWave(index) {
 	const baseSize = 40;
 	const letterSpacing = baseSize * 1.3;
 	const amplitude = random(10, 20);
@@ -890,7 +835,7 @@ function generateXYCWave(index) {
   
 
 // GRID
-function generateXYCGrid(index) {
+function generateGrid(index) {
 	let ratio = 1;
 	let cols = 8;
 	let spacing = 80;
@@ -910,7 +855,7 @@ cy.push(row * spacing + jitterY);
 }
 
 // WAVESTACK
-function generateXYCWaveStack(index) {
+function generateWaveStack(index) {
 	const full = inp.value(); 
 	const wordLength = full.length;
 	const baseSize = 40;
@@ -932,7 +877,7 @@ function generateXYCWaveStack(index) {
   
 
 // MAXFILL
-function generateXYCMaxFill(index) {
+function generateMaxFill(index) {
 	let cols = 8; 
 	let spacingX = width / (cols + 1);
 	let spacingY = height / 6; 
@@ -948,22 +893,10 @@ function generateXYCMaxFill(index) {
 
 	letterRotations.push(random(-PI / 12, PI / 12)); 
   }
-  
-// SPIRAL
-function generateXYCSpiral(index) {
-	let angle = index * 0.5 + random(-0.1, 0.1); 
-	let radius = index * 10 + random(-5, 5);    
 
-	let x = cos(angle) * radius;
-	let y = sin(angle) * radius;
-
-	cx.push(x);
-	cy.push(y);
-	cratio.push(1);
-}
 
 // ARC
-function generateXYCArc(index) {
+function generateArc(index) {
 	let total = tagline.length;
 	let angle = map(index, 0, total - 1, -PI / 2, PI / 2);
 	let radius = 150 + random(-10, 10);
@@ -977,6 +910,8 @@ function generateXYCArc(index) {
 }
 
 
+/* ------------------------ LETTER SHAPE STYLES ------------------------ */
+
 function drawShape(index) {
 
 	  // if null it means space []
@@ -986,8 +921,6 @@ function drawShape(index) {
 	  
 	let isMaxFill = currentLayout === 'maxFill';
 	let scaleFactor = isMaxFill ? 2.5 : 1;  
-
-	
 
 	push();
 	noStroke();
@@ -1071,7 +1004,6 @@ function drawShape(index) {
 	fill('#FAD0C1'); // redz
 	noStroke();
 	ellipse(x, y, size, size);
-  
 	
   
 	// leaf conditional
@@ -1087,7 +1019,7 @@ function drawShape(index) {
   }
   
   
-  function cuteText(texter, index) {
+  function mainText(texter, index) {
 	  if (cx[index] === null || cy[index] === null) {
 		return;
 	  }
@@ -1116,7 +1048,7 @@ function drawShape(index) {
 
 
 // -----FIREBASE-----
-// I referred to an "Intro to Firebase" guide from an elective last year + asked ChatGPT to help me set up this function. Only used Firebase once before so I'm not super familiar with it
+// I referred to an "Intro to Firebase" guide from an elective last year + asked ChatGPT to help me set up and troubleshoot this function, especially with the syntax. I used Firebase once before so I'm not super familiar with it and needed a refresher
 // I created a Firestore Database on my personal Google account and linked it to this project. Then I authorized my Github domain. When a card is finished, the design is saved to Firestore and a unique link is generated. This link leads to a recipient view where the card can be opened and interacted with. 
 // Previously, the recipient view opened a new page directly from the generator, but the link wasn't shareable because the card data wasn't saved anywhere. So, you were initially be able to see the card in recipient.html, but if you copy+pasted and sent the link to someone, they wouldn't be able to see the design you just made. Firebase allows actual link sharing now :)
 
@@ -1138,6 +1070,7 @@ function saveCardToFirestore(cardData, callback) {
 	}).catch(console.error);
 }
 
+// Link copied!
 function showCopiedToast() {
 	const toast = document.createElement("div");
 	toast.classList.add("toast");
@@ -1178,26 +1111,6 @@ function showCopiedToast() {
 		window.open(shareURL, "_blank");
 	});
 }
-
-
-// function openRecipientViewLink() {
-// 	drawInsideCanvas(); 
-  
-// 	const coverImage = canvas.elt.toDataURL("image/png");
-// 	const insideImage = insideCanvas.canvas.toDataURL("image/png");
-  
-// 	const recipientWindow = window.open("recipient.html", "_blank");
-  
-// 	recipientWindow.onload = () => {
-// 	  recipientWindow.postMessage({
-// 		type: "cardDesign",
-// 		data: {
-// 		  coverImage,
-// 		  insideImage
-// 		}
-// 	  }, "*");
-// 	};
-//   }
 
 
   function drawInsideCanvas() {
