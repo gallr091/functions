@@ -21,9 +21,9 @@ let rectColorPicker;
 
 let insideCanvas;
 let toInput, fromInput, messageInput;
-let messageTo = '';
-let messageFrom = '';
-let messageBody = '';
+let messageTo = 'You';
+let messageFrom = 'Me';
+let messageBody = 'This is the inside of your greeting card! Your message will display when the card is “flipped” open. Check it out in the recipient view :)';
 
 let letterRotations = [];
 
@@ -151,6 +151,7 @@ function preload() {
 	  };
 	  
   }
+
   function setup() {
 	containerDiv = createDiv().addClass('container');
   
@@ -169,40 +170,84 @@ function preload() {
 	let tabButtonsDiv = createDiv().addClass('tab-buttons').parent(controlsDiv);
   
 	const isDesktop = windowWidth >= 600;
+
+	const labels = {
+		themetext: 'Theme & Text',
+		colors: 'Colors',
+		positions: 'Positions',
+		message: 'Message',
+		final: 'Final'
+	  };
   
 	const tabNames = isDesktop
 	  ? ['Card Design', 'Message']
-	  : ['Theme & Text', 'Colors', 'Positions', 'Message', 'Final'];
+	  : ['Theme & Text', 'Colors', 'Positions', 'Message', 'Done?'];
   
-	tabNames.forEach(name => {
-	  const key = name.toLowerCase().replace(/ & /g, '').replace(/\s+/g, '');
-	  const btn = createButton(name)
-		.addClass('tab-button')
-		.attribute('data-tab', key)
-		.parent(tabButtonsDiv);
-	  btn.mousePressed(() => switchTab(key));
-	  tabButtons[key] = btn;
-  
-	  const tabContent = createDiv().addClass('tab-content').parent(controlsDiv);
-	  tabs[key] = tabContent;
-	});
+	  const tabLabelMap = {
+		'Done?': 'final'
+	  };
+
+	  tabNames.forEach(name => {
+		const key = tabLabelMap[name] || name.toLowerCase().replace(/ & /g, '').replace(/\s+/g, '');
+		const btn = createButton('').addClass('tab-button').attribute('data-tab', key).parent(tabButtonsDiv);
+	   	//not working 
+		// btn.attribute('data-tooltip', labels[key]); 
+
+		if (!isDesktop) {
+		  //mobile svg icons
+		  const iconMap = {
+			themetext: 'icon-01.svg',
+			colors: 'icon-02.svg',
+			positions: 'icon-03.svg',
+			message: 'icon-04.svg'
+		  };
+	  
+		  if (iconMap[key]) {
+			const img = createImg(`assets/${iconMap[key]}`, name);
+			img.parent(btn);
+			img.addClass('tab-icon');
+		  } else {
+			btn.html(name); // except final
+		  }
+		} else {
+		  // desktop
+		  btn.html(name);
+		}
+	  
+		btn.mousePressed(() => switchTab(key));
+		tabButtons[key] = btn;
+	  
+		const tabContent = createDiv().addClass('tab-content').parent(controlsDiv);
+		tabs[key] = tabContent;
+	  });
+	  
   
 	// desktop layout 
 	if (isDesktop) {
-	  const cardDesignGroup = createDiv().id('carddesign-controls').parent(tabs['carddesign']);
-	  createThemeTextControls(cardDesignGroup);
-	  createColorControls(cardDesignGroup);
-	  createPositionControls(cardDesignGroup);
-  
-	  const messageGroup = createDiv().id('message-controls').parent(tabs['message']);
-	  createMessageControls(messageGroup);
-	  createFinalControls(messageGroup);
-	} else {
+	const cardDesignGroup = createDiv().id('carddesign-controls').parent(tabs['carddesign']);
+	createThemeTextControls(cardDesignGroup);
+	createColorControls(cardDesignGroup);
+	createPositionControls(cardDesignGroup);
+	// createFinalControls(cardDesignGroup, { refresh: true, save: false, recipient: false }); // just refresh
+
+	const messageGroup = createDiv().id('message-controls').parent(tabs['message']);
+	createMessageControls(messageGroup);
+
+	let wrapper = select('#final-controls-wrapper');
+	createFinalControls(wrapper, { refresh: false, save: true, recipient: true, saveInside: true  });
+
+} else {
 	  createThemeTextControls(tabs['themetext']);
 	  createColorControls(tabs['colors']);
 	  createPositionControls(tabs['positions']);
 	  createMessageControls(tabs['message']);
-	  createFinalControls(tabs['final']);
+	  createFinalControls(tabs['final'], {
+		// refresh: true,
+		save: true,
+		recipient: true,
+		copyLink: true,
+		saveInside: true 
+	});
 	}
 
 	// display active tab on page load
@@ -219,6 +264,9 @@ function preload() {
 	for (let key in tabs) {
 	  if (key === tabKey) {
 		tabs[key].show();
+		tabs[key].style('display', 'flex');
+		tabs[key].style('flex-direction', 'column');
+		// tabs[key].style('gap', '2rem');
 		tabButtons[key].addClass('active');
 	  } else {
 		tabs[key].hide();
@@ -272,6 +320,8 @@ function preload() {
   
   function createThemeTextControls(parent) {
 
+	createElement('h3', 'Theme & Text').parent(parent).addClass('tab-label');
+
 	let inputRow = createDiv();
 	inputRow.addClass('input-row');
 	inputRow.parent(parent);
@@ -302,7 +352,7 @@ function preload() {
 
 
 	// layout
-	let layoutLabel = createP('Layout Style');
+	let layoutLabel = createP('Text Layout');
 	layoutLabel.parent(inputRow);
 	layoutLabel.addClass('label');
 
@@ -367,6 +417,8 @@ function preload() {
   
   function createColorControls(parent) {
 
+	createElement('h3', 'Colors').parent(parent).addClass('tab-label');
+
 	let inputRow = createDiv();
 	inputRow.addClass('block-row');
 	inputRow.parent(parent);
@@ -376,7 +428,7 @@ function preload() {
 	block1.parent(inputRow);
 
 	let block2 = createDiv();
-	block2.id('block3');
+	block2.id('block2');
 	block2.parent(inputRow);
 
 	let block3 = createDiv();
@@ -404,11 +456,11 @@ function preload() {
 		let mainColorLabel = createP('Main Text Color');
 		mainColorLabel.addClass('label');
 
-		mainColorLabel.parent(block2);
+		mainColorLabel.parent(block3);
 		mainColorPicker = createColorPicker(mainTextColor);
 		mainColorPicker.addClass('colorpicker');
 
-		mainColorPicker.parent(block2);
+		mainColorPicker.parent(block3);
 		mainColorPicker.input(() => {
 		mainTextColor = mainColorPicker.value();
 	});
@@ -416,9 +468,9 @@ function preload() {
 	// caption color
 	let captionColorLabel = createP('Caption Text Color');
 	captionColorLabel.addClass('label');
-	captionColorLabel.parent(block3);
+	captionColorLabel.parent(block4);
 	captionColorPicker = createColorPicker(captionTextColor);
-	captionColorPicker.parent(block3);
+	captionColorPicker.parent(block4);
 	captionColorPicker.addClass('colorpicker');
 
 	captionColorPicker.input(() => {
@@ -428,9 +480,9 @@ function preload() {
 	// bg color
 	let bgColorLabel = createP('Background Color');
 	bgColorLabel.addClass('label');
-	bgColorLabel.parent(block4);
+	bgColorLabel.parent(block2);
 	bgColorPicker = createColorPicker(bgColor);
-	bgColorPicker.parent(block4);
+	bgColorPicker.parent(block2);
 	bgColorPicker.addClass('colorpicker');
 
 	bgColorPicker.input(() => {
@@ -439,6 +491,8 @@ function preload() {
   }
   
   function createPositionControls(parent) {
+
+	createElement('h3', 'Positions').parent(parent).addClass('tab-label');
 
 	let inputRow = createDiv();
 	inputRow.addClass('input-row');
@@ -486,6 +540,8 @@ function preload() {
 
   function createMessageControls(parent) {
 
+	createElement('h3', 'Message').parent(parent).addClass('tab-label');
+
 	let inputRow = createDiv();
 	inputRow.parent(parent);
 	inputRow.addClass('input-row');
@@ -494,7 +550,7 @@ function preload() {
 	messageBlock.parent(parent);
 	messageBlock.addClass('message-block');
 
-	let toLabel = createP("To:");
+	let toLabel = createP("To");
 	toLabel.parent(inputRow);
 	toLabel.addClass('label');
 
@@ -508,7 +564,7 @@ function preload() {
 		updateInsideCanvas();
 	  });
 
-	  let fromLabel = createP("From:");
+	  let fromLabel = createP("From");
 	  fromLabel.parent(inputRow);
 	  fromLabel.addClass('label');
 
@@ -524,7 +580,7 @@ function preload() {
 	  });
 
 
-	let messageLabel = createP("Message:");
+	let messageLabel = createP("Message");
 	messageLabel.parent(messageBlock);
 	messageLabel.addClass('label');
 
@@ -543,42 +599,66 @@ function preload() {
 
   }
 
-//   function updateInsideCanvas() {
-// 	insideCanvas.clear();
-// 	insideCanvas.background('#fff');
-  
-// 	insideCanvas.fill(0);
-// 	insideCanvas.textAlign(CENTER, TOP);
-// 	insideCanvas.textSize(24);
-  
-// 	insideCanvas.text(`To: ${messageTo}`, insideCanvas.width / 2, 100);
-// 	insideCanvas.textSize(20);
-// 	insideCanvas.text(messageBody, insideCanvas.width / 2, 160);
-// 	insideCanvas.textSize(24);
-// 	insideCanvas.text(`From: ${messageFrom}`, insideCanvas.width / 2, 360);
-//   }
-  
-  
 
-  function createFinalControls(parent) {
-	let refreshBtn = createButton('Refresh');
-	refreshBtn.addClass('button');
-	refreshBtn.parent(parent);
-	refreshBtn.mousePressed(() => {
-	  forceRedraw = true;
+function createFinalControls(parent) {
+	const isMobile = windowWidth < 600;
+
+	const wrapper = createDiv().addClass('final-columns').parent(parent);
+
+	// send design
+	const leftCol = createDiv().addClass('final-column').parent(wrapper);
+
+	createElement('h2', 'Time to send!').parent(leftCol);
+	createP('You can preview your card just like your recipient will see it. A unique link will be generated for you to share.').parent(leftCol);
+
+	const viewBtn = createButton('Open Recipient View');
+	viewBtn.addClass('button');
+	viewBtn.parent(leftCol);
+	viewBtn.mousePressed(() => openRecipientViewLink());
+
+	const copyBtn = createButton('Copy Link');
+	copyBtn.addClass('button');
+	copyBtn.parent(leftCol);
+	copyBtn.mousePressed(() => {
+		drawInsideCanvas();
+		const cardData = {
+			coverImage: canvas.elt.toDataURL("image/png"),
+			insideImage: insideCanvas.canvas.toDataURL("image/png"),
+			bgColor
+		};
+		saveCardToFirestore(cardData, (shareURL) => {
+			navigator.clipboard.writeText(shareURL).then(() => {
+				copyStatus.show();
+				setTimeout(() => copyStatus.hide(), 2000);
+			});
+		});
 	});
-  
-	let saveBtn = createButton('Save');
+
+	// save design
+	const rightCol = createDiv().addClass('final-column').parent(wrapper);
+
+	createElement('h2', '... or save your design!').parent(rightCol);
+	createP('Want to make it extra special? Save your card as a PNG to print and give in person.').parent(rightCol);
+
+	const saveBtn = createButton('Download Design');
 	saveBtn.addClass('button');
-	saveBtn.parent(parent);
+	saveBtn.parent(rightCol);
 	saveBtn.mousePressed(() => saveCanvas('greeting-card', 'png'));
-  
-	let recipientButton = createButton('Open Recipient View');
-	recipientButton.addClass('button');
-	recipientButton.parent(parent);
-	recipientButton.mousePressed(openRecipientViewLink);
-  
-  }
+
+	let saveInsideBtn = createButton('Download Message');
+	saveInsideBtn.addClass('button');
+	saveInsideBtn.parent(rightCol);
+	// graphics behaves differently
+	saveInsideBtn.mousePressed(() => {
+		drawInsideCanvas();
+		const link = document.createElement('a');
+		link.download = 'greeting-card-message.png';
+		link.href = insideCanvas.canvas.toDataURL('image/png');
+		link.click();
+	});
+}
+
+
   
 function applyTheme(name) {
 	let theme = themes[name];
@@ -607,11 +687,18 @@ function draw() {
 		background(bgColor); 
 	  }
 
-	 if (currentTheme === 'romantic') {
+	  if (currentTheme === 'romantic') {
 		push();
-		drawBorder();
+		// drawBorder();
+	  
+		if (balloons.length === 0) {
+		  generateBalloons(); 
+		}
+	
+		drawScene(); 
 		pop();
-	  } 
+	  }
+	  
 
 	  if (currentTheme === 'spring') {
 
@@ -1000,8 +1087,6 @@ function drawShape(index) {
   }
   
   
-
-  
   function cuteText(texter, index) {
 	  if (cx[index] === null || cy[index] === null) {
 		return;
@@ -1029,30 +1114,92 @@ function drawShape(index) {
 	pop();
   }
 
+
+// -----FIREBASE-----
+// I referred to an "Intro to Firebase" guide from an elective last year + asked ChatGPT to help me set up this function. Only used Firebase once before so I'm not super familiar with it
+// I created a Firestore Database on my personal Google account and linked it to this project. Then I authorized my Github domain. When a card is finished, the design is saved to Firestore and a unique link is generated. This link leads to a recipient view where the card can be opened and interacted with. 
+// Previously, the recipient view opened a new page directly from the generator, but the link wasn't shareable because the card data wasn't saved anywhere. So, you were initially be able to see the card in recipient.html, but if you copy+pasted and sent the link to someone, they wouldn't be able to see the design you just made. Firebase allows actual link sharing now :)
+
+function saveCardToFirestore(cardData, callback) {
+	const docRef = db.collection("cards").doc(); // auto ID
+
+	docRef.set(cardData).then(() => {
+		// automatically detects subfolder. I looked this up so I could test with my live server instead of directly plugging in my github url
+		const basePath = window.location.pathname.split('/').slice(0, -1).join('/');
+		const shareURL = `${window.location.origin}${basePath}/recipient.html?id=${docRef.id}`;
+
+		//(still needed to open new tab etc.)
+		callback(shareURL);
+
+		// copy to clipboard + show toast
+		navigator.clipboard.writeText(shareURL).then(() => {
+			showCopiedToast();
+		});
+	}).catch(console.error);
+}
+
+function showCopiedToast() {
+	const toast = document.createElement("div");
+	toast.classList.add("toast");
+	toast.textContent = "Link copied!";
+	document.body.appendChild(toast);
+
+	// have to add this for it to work lol so annoying
+	setTimeout(() => {
+		toast.classList.add("show");
+	}, 10); 
+
+	setTimeout(() => {
+		toast.classList.remove("show");
+		setTimeout(() => toast.remove(), 300); 
+	}, 2000);
+}
+
+
   function getCanvasImage() {
 	return canvas.toDataURL('image/png');
   }
 
-function openRecipientViewLink() {
-	drawInsideCanvas(); 
-  
+
+  function openRecipientViewLink() {
+	drawInsideCanvas();
+
 	const coverImage = canvas.elt.toDataURL("image/png");
 	const insideImage = insideCanvas.canvas.toDataURL("image/png");
-  
-	const recipientWindow = window.open("recipient.html", "_blank");
-  
-	recipientWindow.onload = () => {
-	  recipientWindow.postMessage({
-		type: "cardDesign",
-		data: {
-		  coverImage,
-		  insideImage
-		}
-	  }, "*");
-	};
-  }
 
+	const cardData = { coverImage, insideImage, bgColor };
+
+	console.log("current bgColor:", bgColor);
+	console.log("saving card data to firestore:", cardData);
+
+
+	saveCardToFirestore(cardData, (shareURL) => {
+		console.log("card saved! yippee! opening:", shareURL);
+		window.open(shareURL, "_blank");
+	});
+}
+
+
+// function openRecipientViewLink() {
+// 	drawInsideCanvas(); 
   
+// 	const coverImage = canvas.elt.toDataURL("image/png");
+// 	const insideImage = insideCanvas.canvas.toDataURL("image/png");
+  
+// 	const recipientWindow = window.open("recipient.html", "_blank");
+  
+// 	recipientWindow.onload = () => {
+// 	  recipientWindow.postMessage({
+// 		type: "cardDesign",
+// 		data: {
+// 		  coverImage,
+// 		  insideImage
+// 		}
+// 	  }, "*");
+// 	};
+//   }
+
+
   function drawInsideCanvas() {
 	insideCanvas.background(bgColor);
 	insideCanvas.fill(captionTextColor); 
