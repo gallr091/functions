@@ -736,4 +736,37 @@ button {
 	}
   }
   
-  
+  /* ------------------------ CANVAS SCALE ACROSS BREAKPOINTS ------------------------ */
+  /* 30vw / 1 */
+ 
+  @media screen and (min-width: 600px) {
+	.canvas{
+		transform: scale(0.5);
+	}
+}
+
+@media screen and (min-width: 700px) {
+	.canvas{
+		transform: scale(0.6);
+	}
+}
+
+@media screen and (min-width: 800px) {
+	.canvas{
+		transform: scale(0.7);
+	}
+}
+
+@media screen and (min-width: 900px) {
+	.canvas{
+		transform: scale(0.8);
+	}
+}
+
+@media screen and (min-width: 1000px) {
+	.canvas{
+		transform: scale(1);
+	}
+}
+
+
