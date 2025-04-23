@@ -234,7 +234,7 @@ function preload() {
 	createMessageControls(messageGroup);
 
 	let wrapper = select('#final-controls-wrapper');
-	createFinalControls(wrapper, { refresh: false, save: true, recipient: true });
+	createFinalControls(wrapper, { refresh: false, save: true, recipient: true, saveInside: true  });
 
 } else {
 	  createThemeTextControls(tabs['themetext']);
@@ -245,7 +245,8 @@ function preload() {
 		// refresh: true,
 		save: true,
 		recipient: true,
-		copyLink: true
+		copyLink: true,
+		saveInside: true 
 	});
 	}
 
@@ -590,20 +591,6 @@ function preload() {
 
   }
 
-//   function updateInsideCanvas() {
-// 	insideCanvas.clear();
-// 	insideCanvas.background('#fff');
-  
-// 	insideCanvas.fill(0);
-// 	insideCanvas.textAlign(CENTER, TOP);
-// 	insideCanvas.textSize(24);
-  
-// 	insideCanvas.text(`To: ${messageTo}`, insideCanvas.width / 2, 100);
-// 	insideCanvas.textSize(20);
-// 	insideCanvas.text(messageBody, insideCanvas.width / 2, 160);
-// 	insideCanvas.textSize(24);
-// 	insideCanvas.text(`From: ${messageFrom}`, insideCanvas.width / 2, 360);
-//   }
 
 function createFinalControls(parent) {
 	const isMobile = windowWidth < 600;
@@ -653,10 +640,14 @@ function createFinalControls(parent) {
 	let saveInsideBtn = createButton('Download Message');
 	saveInsideBtn.addClass('button');
 	saveInsideBtn.parent(rightCol);
+	// graphics behaves differently
 	saveInsideBtn.mousePressed(() => {
-	save(insideCanvas.canvas, 'greeting-card-message.png');
-});
-
+		drawInsideCanvas();
+		const link = document.createElement('a');
+		link.download = 'greeting-card-message.png';
+		link.href = insideCanvas.canvas.toDataURL('image/png');
+		link.click();
+	});
 }
 
 
@@ -1141,27 +1132,18 @@ function saveCardToFirestore(cardData, callback) {
 
 function showCopiedToast() {
 	const toast = document.createElement("div");
+	toast.classList.add("toast");
 	toast.textContent = "Link copied!";
-	toast.style.position = "fixed";
-	toast.style.bottom = "20px";
-	toast.style.left = "50%";
-	toast.style.transform = "translateX(-50%)";
-	toast.style.backgroundColor = "#222";
-	toast.style.color = "#fff";
-	toast.style.padding = "10px 20px";
-	toast.style.borderRadius = "8px";
-	toast.style.zIndex = "9999";
-	toast.style.opacity = "0";
-	toast.style.transition = "opacity 0.3s ease";
 	document.body.appendChild(toast);
 
-	requestAnimationFrame(() => {
-		toast.style.opacity = "1";
-	});
+	// have to add this for it to work lol so annoying
+	setTimeout(() => {
+		toast.classList.add("show");
+	}, 10); 
 
 	setTimeout(() => {
-		toast.style.opacity = "0";
-		setTimeout(() => toast.remove(), 300);
+		toast.classList.remove("show");
+		setTimeout(() => toast.remove(), 300); 
 	}, 2000);
 }
 

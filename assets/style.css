@@ -219,13 +219,6 @@ html, body {
 	font-family: var(--title-font);
 }
 
-.copy-status {
-	font-size: 14px;
-	color: green;
-	margin-top: 0.5rem;
-  }
-  
-
 
 @media screen and (max-width: 600px) {
 	#open-export-btn {
@@ -254,6 +247,25 @@ html, body {
 
 }
 
+.toast {
+	position: fixed;
+	bottom: 20px;
+	left: 50%;
+	transform: translateX(-50%);
+	background-color: #222;
+	color: #fff;
+	padding: 10px 20px;
+	border-radius: 8px;
+	z-index: 9999;
+	opacity: 0;
+	transition: opacity 0.3s ease;
+	pointer-events: none; 
+  }
+  
+  .toast.show {
+	opacity: 1;
+  }
+  
 
 
 
