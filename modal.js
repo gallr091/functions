@@ -8,18 +8,40 @@ window.addEventListener("load", () => {
 	const openWelcomeBtn = document.getElementById("open-modal-btn");
 	const openExportBtn = document.getElementById("open-export-btn");
 
-	// intro modal
-	welcomeModal.style.display = "block";
-	closeWelcomeBtn.onclick = () => welcomeModal.style.display = "none";
-	openWelcomeBtn.onclick = () => welcomeModal.style.display = "block";
+	// bounce in
+	function openModal(modal) {
+		modal.style.display = "block";
+		requestAnimationFrame(() => {
+			modal.classList.add("show");
+			modal.classList.remove("hide");
+		});
+	}
 
-	// export modal
-	openExportBtn.onclick = () => exportModal.style.display = "block";
-	closeExportBtn.onclick = () => exportModal.style.display = "none";
+	// bounce out
+	function closeModal(modal) {
+		modal.classList.add("hide");
+		modal.classList.remove("show");
 
-	// close
+		const content = modal.querySelector('.modal-content');
+		content.addEventListener('animationend', () => {
+			modal.style.display = "none";
+			modal.classList.remove("hide");
+		}, { once: true });
+	}
+
+	// on load
+	openModal(welcomeModal);
+
+	// buttons
+	openWelcomeBtn.onclick = () => openModal(welcomeModal);
+	openExportBtn.onclick = () => openModal(exportModal);
+
+	closeWelcomeBtn.onclick = () => closeModal(welcomeModal);
+	closeExportBtn.onclick = () => closeModal(exportModal);
+
+	// click outside to close
 	window.onclick = (event) => {
-		if (event.target === welcomeModal) welcomeModal.style.display = "none";
-		if (event.target === exportModal) exportModal.style.display = "none";
+		if (event.target === welcomeModal) closeModal(welcomeModal);
+		if (event.target === exportModal) closeModal(exportModal);
 	};
 });
