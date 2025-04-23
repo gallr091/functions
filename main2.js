@@ -224,7 +224,7 @@ function preload() {
 	createThemeTextControls(cardDesignGroup);
 	createColorControls(cardDesignGroup);
 	createPositionControls(cardDesignGroup);
-	createFinalControls(cardDesignGroup, { refresh: true, save: false, recipient: false }); // just refresh
+	// createFinalControls(cardDesignGroup, { refresh: true, save: false, recipient: false }); // just refresh
 
 	const messageGroup = createDiv().id('message-controls').parent(tabs['message']);
 	createMessageControls(messageGroup);
@@ -238,7 +238,7 @@ function preload() {
 	  createPositionControls(tabs['positions']);
 	  createMessageControls(tabs['message']);
 	  createFinalControls(tabs['final'], {
-		refresh: true,
+		// refresh: true,
 		save: true,
 		recipient: true,
 		copyLink: true
@@ -345,7 +345,7 @@ function preload() {
 
 
 	// layout
-	let layoutLabel = createP('Layout Style');
+	let layoutLabel = createP('Text Layout');
 	layoutLabel.parent(inputRow);
 	layoutLabel.addClass('label');
 
@@ -600,51 +600,61 @@ function preload() {
 // 	insideCanvas.textSize(24);
 // 	insideCanvas.text(`From: ${messageFrom}`, insideCanvas.width / 2, 360);
 //   }
-function createFinalControls(parent, options = { refresh: true, save: true, recipient: true, copyLink: true }) {
+
+function createFinalControls(parent) {
 	const isMobile = windowWidth < 600;
 
-	if (options.refresh) {
-		let refreshBtn = createButton('Refresh');
-		refreshBtn.addClass('button');
-		refreshBtn.parent(parent);
-		refreshBtn.mousePressed(() => {
-			forceRedraw = true;
-		});
-	}
+	const wrapper = createDiv().addClass('final-columns').parent(parent);
 
-	if (options.save) {
-		let saveBtn = createButton('Save as PNG');
-		saveBtn.addClass('button');
-		saveBtn.parent(parent);
-		saveBtn.mousePressed(() => saveCanvas('greeting-card', 'png'));
-	}
+	// send design
+	const leftCol = createDiv().addClass('final-column').parent(wrapper);
 
-	if (options.recipient) {
-		let viewBtn = createButton('Open Recipient View');
-		viewBtn.addClass('button');
-		viewBtn.parent(parent);
-		viewBtn.mousePressed(() => openRecipientViewLink());
-	}
+	createElement('h2', 'Time to send!').parent(leftCol);
+	createP('You can preview your card just like your recipient will see it. A unique link will be generated for you to copy and share.').parent(leftCol);
 
-	if (options.copyLink && isMobile) {
-		let copyBtn = createButton('Copy Recipient Link');
-		copyBtn.addClass('button');
-		copyBtn.parent(parent);
-		copyBtn.mousePressed(() => {
-			drawInsideCanvas();
-			const cardData = {
-				coverImage: canvas.elt.toDataURL("image/png"),
-				insideImage: insideCanvas.canvas.toDataURL("image/png"),
-				bgColor
-			};
-			saveCardToFirestore(cardData, (shareURL) => {
-				navigator.clipboard.writeText(shareURL).then(() => {
-					showCopiedToast();
-				});
+	const viewBtn = createButton('Open Recipient View');
+	viewBtn.addClass('button');
+	viewBtn.parent(leftCol);
+	viewBtn.mousePressed(() => openRecipientViewLink());
+
+	const copyBtn = createButton('Copy Link');
+	copyBtn.addClass('button');
+	copyBtn.parent(leftCol);
+	copyBtn.mousePressed(() => {
+		drawInsideCanvas();
+		const cardData = {
+			coverImage: canvas.elt.toDataURL("image/png"),
+			insideImage: insideCanvas.canvas.toDataURL("image/png"),
+			bgColor
+		};
+		saveCardToFirestore(cardData, (shareURL) => {
+			navigator.clipboard.writeText(shareURL).then(() => {
+				showCopiedToast();
 			});
 		});
-	}
+	});
+
+	// save design
+	const rightCol = createDiv().addClass('final-column').parent(wrapper);
+
+	createElement('h2', '... or save your design!').parent(rightCol);
+	createP('Want to make it extra special? Save your card as a PNG to print and give in person.').parent(rightCol);
+
+	const saveBtn = createButton('Download Design');
+	saveBtn.addClass('button');
+	saveBtn.parent(rightCol);
+	saveBtn.mousePressed(() => saveCanvas('greeting-card', 'png'));
+
+	let saveInsideBtn = createButton('Download Message');
+	saveInsideBtn.addClass('button');
+	saveInsideBtn.parent(rightCol);
+	saveInsideBtn.mousePressed(() => {
+	save(insideCanvas.canvas, 'greeting-card-message.png');
+});
+
 }
+
+
 
 
   
