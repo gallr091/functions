@@ -111,7 +111,7 @@ let bgColor = '#FFFCF5';
 // Layout
 let mainX = 150, mainY = 240;
 let captionX = 400, captionY = 300;
-let widther, heighter, waver, glitch, maxIndex, maxim;
+let widther, heighter, glitch
 
 // Arrays 
 let cx = [], cy = [], cratio = [];
@@ -668,7 +668,7 @@ function applyTheme(name) {
   
 	forceRedraw = true;
   }
-  
+
   
   
 function draw() {
@@ -676,7 +676,6 @@ function draw() {
 	if (activeTab === 'message') {
 		drawInsideCanvas();
 	  }
-
 
 	if (currentTheme === 'punk') {
 		background(bgColor); 
@@ -688,21 +687,19 @@ function draw() {
 	  if (currentTheme === 'romantic') {
 		push();
 		// drawBorder();
-	  
 		if (balloons.length === 0) {
 		  generateBalloons(); 
 		}
-	
 		drawScene(); 
 		pop();
 	  }
-	  
 
 	  if (currentTheme === 'spring') {
-
 		push();
-		console.log('drawing stems and flowers?');
-		drawStemsAndFlowers();
+		if (flowerPositions.length === 0) {
+		  generateSpringFlowers();
+		}
+		drawSpringScene();
 		pop();
 	  }
 
@@ -723,7 +720,6 @@ function draw() {
 		fontChoices = [];
 		widther = 50;
 		heighter = 100;
-		waver = random(100);
 		glitch = random(0.3, 0.8);
 	  
 		// generate layout positions
@@ -762,7 +758,6 @@ function draw() {
 		  }
 		}
 		
-	  
 		forceRedraw = false;
 	  }
 	  
@@ -787,7 +782,7 @@ function draw() {
 		if (captionFonts && captionFonts[currentTheme]) {
 		textFont(captionFonts[currentTheme]);
 		} else {
-		textFont('Helvetica'); // fallback if not found
+		textFont('Helvetica'); // fallback 
 		}
 
 		textSize(30);
@@ -845,11 +840,8 @@ let col = index % cols;
 // let jitterX = random(-5, 5); 
 // let jitterY = random(-5, 5);
 
-let jitterX = 0;
-let jitterY = 0;
-
-cx.push(col * spacing + jitterX);
-cy.push(row * spacing + jitterY);
+cx.push(col * spacing);
+cy.push(row * spacing);
 
 	cratio.push(ratio);
 }

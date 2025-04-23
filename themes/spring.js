@@ -1,37 +1,37 @@
 // I modified a previous p5.js sketch I made: https://editor.p5js.org/gallr091/sketches/rETe8rkv4
 
-const flowerPositions = [
-	{ x: 200, y: 450, color: "#a888e8" },
-	{ x: 300, y: 400, color: "#ff8b00" },
-	{ x: 400, y: 400, color: "#6497bf" },
-	{ x: 150, y: 400, color: "#FF66AA" },
-	{ x: 350, y: 450, color: "#fb3310" },
-	{ x: 500, y: 450, color: "#a64d79" },
-	{ x: 550, y: 400, color: "#FF9966" }
-  ];
-  
-  function setup() {
-	createCanvas(707, 500);
-	// background(255);
-	drawStemsAndFlowers();
+const flowerPositions = [];
+
+function generateSpringFlowers() {
+  flowerPositions.length = 0;
+  const colors = ["#a888e8", "#ff8b00", "#6497bf", "#FF66AA", "#fb3310", "#a64d79", "#FF9966"];
+
+  for (let i = 0; i < 10; i++) {
+    flowerPositions.push({
+      x: random(50, width - 50),
+      y: random(350, height - 50),
+      color: random(colors)
+    });
   }
+}
+
+function drawSpringScene() {
+	if (flowerPositions.length === 0) return;
   
-  function drawStemsAndFlowers() {
 	stroke("#77a37a");
 	strokeWeight(3);
 	for (let pos of flowerPositions) {
 	  line(pos.x, height, pos.x, pos.y);
-	  drawFlower(pos.x, pos.y, pos.color); 
+	  drawSpringFlower(pos.x, pos.y, pos.color);
 	}
   }
   
-  function drawFlower(x, y, colorHex) {
+  function drawSpringFlower(x, y, colorHex) {
 	push();
 	translate(x, y);
 	noStroke();
 	fill(color(colorHex));
   
-	
 	for (let i = 0; i < 10; i++) {
 	  ellipse(0, 20, 12.5, 25);
 	  rotate(PI / 5);
