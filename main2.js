@@ -181,10 +181,14 @@ function preload() {
   
 	const tabNames = isDesktop
 	  ? ['Card Design', 'Message']
-	  : ['Theme & Text', 'Colors', 'Positions', 'Message', 'Final'];
+	  : ['Theme & Text', 'Colors', 'Positions', 'Message', 'Done?'];
   
+	  const tabLabelMap = {
+		'Done?': 'final'
+	  };
+
 	  tabNames.forEach(name => {
-		const key = name.toLowerCase().replace(/ & /g, '').replace(/\s+/g, '');
+		const key = tabLabelMap[name] || name.toLowerCase().replace(/ & /g, '').replace(/\s+/g, '');
 		const btn = createButton('').addClass('tab-button').attribute('data-tab', key).parent(tabButtonsDiv);
 	   	//not working 
 		// btn.attribute('data-tooltip', labels[key]); 
@@ -629,7 +633,8 @@ function createFinalControls(parent) {
 		};
 		saveCardToFirestore(cardData, (shareURL) => {
 			navigator.clipboard.writeText(shareURL).then(() => {
-				showCopiedToast();
+				copyStatus.show();
+				setTimeout(() => copyStatus.hide(), 2000);
 			});
 		});
 	});
@@ -653,8 +658,6 @@ function createFinalControls(parent) {
 });
 
 }
-
-
 
 
   
@@ -1117,33 +1120,51 @@ function drawShape(index) {
 // I referred to an "Intro to Firebase" guide from an elective last year + asked ChatGPT to help me set up this function. Only used Firebase once before so I'm not super familiar with it
 // I created a Firestore Database on my personal Google account and linked it to this project. Then I authorized my Github domain. When a card is finished, the design is saved to Firestore and a unique link is generated. This link leads to a recipient view where the card can be opened and interacted with. 
 // Previously, the recipient view opened a new page directly from the generator, but the link wasn't shareable because the card data wasn't saved anywhere. So, you were initially be able to see the card in recipient.html, but if you copy+pasted and sent the link to someone, they wouldn't be able to see the design you just made. Firebase allows actual link sharing now :)
-  function saveCardToFirestore(cardData, callback) {
+
+function saveCardToFirestore(cardData, callback) {
 	const docRef = db.collection("cards").doc(); // auto ID
+
 	docRef.set(cardData).then(() => {
 		// automatically detects subfolder. I looked this up so I could test with my live server instead of directly plugging in my github url
 		const basePath = window.location.pathname.split('/').slice(0, -1).join('/');
-		const shareURL = `${window.location.origin}${basePath}/recipient.html?id=${docRef.id}`;		
-	  callback(shareURL);
+		const shareURL = `${window.location.origin}${basePath}/recipient.html?id=${docRef.id}`;
 
-	// show link + copy button
-    const linkContainer = document.getElementById("share-link-container");
-    const linkEl = document.getElementById("share-link");
-    const copyBtn = document.getElementById("copy-link-btn");
-    const copiedMsg = document.getElementById("copied-msg");
+		//(still needed to open new tab etc.)
+		callback(shareURL);
 
-    linkEl.textContent = shareURL;
-    linkEl.href = shareURL;
-    linkContainer.style.display = "block";
-    copiedMsg.style.display = "none";
-
-    copyBtn.onclick = () => {
-      navigator.clipboard.writeText(shareURL).then(() => {
-        copiedMsg.style.display = "block";
-        setTimeout(() => copiedMsg.style.display = "none", 2000);
-      });
-    };
-  }).catch(console.error);
+		// copy to clipboard + show toast
+		navigator.clipboard.writeText(shareURL).then(() => {
+			showCopiedToast();
+		});
+	}).catch(console.error);
 }
+
+function showCopiedToast() {
+	const toast = document.createElement("div");
+	toast.textContent = "Link copied!";
+	toast.style.position = "fixed";
+	toast.style.bottom = "20px";
+	toast.style.left = "50%";
+	toast.style.transform = "translateX(-50%)";
+	toast.style.backgroundColor = "#222";
+	toast.style.color = "#fff";
+	toast.style.padding = "10px 20px";
+	toast.style.borderRadius = "8px";
+	toast.style.zIndex = "9999";
+	toast.style.opacity = "0";
+	toast.style.transition = "opacity 0.3s ease";
+	document.body.appendChild(toast);
+
+	requestAnimationFrame(() => {
+		toast.style.opacity = "1";
+	});
+
+	setTimeout(() => {
+		toast.style.opacity = "0";
+		setTimeout(() => toast.remove(), 300);
+	}, 2000);
+}
+
 
   function getCanvasImage() {
 	return canvas.toDataURL('image/png');

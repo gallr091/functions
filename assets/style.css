@@ -219,16 +219,13 @@ html, body {
 	font-family: var(--title-font);
 }
 
-#copied-msg {
-	margin-left: 10px;
+.copy-status {
+	font-size: 14px;
 	color: green;
-	display: none;
-	font-weight: 500;
+	margin-top: 0.5rem;
   }
+  
 
-  #share-link {
-	display: none; 
-  }
 
 @media screen and (max-width: 600px) {
 	#open-export-btn {
